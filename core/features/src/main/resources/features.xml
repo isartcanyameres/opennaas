@@ -81,8 +81,17 @@
 		<feature>http</feature>
 		<feature>cxf</feature>
 		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
+		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-network</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
+		<feature version="${project.version}">opennaas-luminis</feature>
 		
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxws/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http-jetty/${cxf.version}</bundle>
+
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws.proxy/${project.version}</bundle>	
 	</feature>
@@ -159,6 +168,7 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		
 	</feature>
 
    <feature name="itests-helpers" version="${project.version}">	  	
