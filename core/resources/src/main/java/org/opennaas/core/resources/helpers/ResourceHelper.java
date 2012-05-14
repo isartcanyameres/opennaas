@@ -38,7 +38,19 @@ public class ResourceHelper {
 				"netconf");
 		// ADDED
 		return protocolSessionContext;
+	}
 
+	public static ProtocolSessionContext newSessionContextWonesys() {
+		String hostIpAddress = "10.10.80.11";
+		String hostPort = "27773";
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + hostIpAddress + ":" + hostPort);
+
+		protocolSessionContext.addParameter("protocol.mock", "true");
+
+		return protocolSessionContext;
 	}
 
 	/**

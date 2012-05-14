@@ -40,6 +40,14 @@ public abstract class OpennaasExamOptions
 				.versionAsInProject());
 	}
 
+	public final static Option includeWSClient()
+	{
+		return composite(mavenBundle()
+				.groupId("org.opennaas")
+				.artifactId("org.opennaas.ws.client")
+				.versionAsInProject());
+	}
+
 	public final static Option includeTestMockProfile()
 	{
 		return mavenBundle()
