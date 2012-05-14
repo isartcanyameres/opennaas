@@ -254,6 +254,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.ws</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.ws.client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -706,8 +716,8 @@
         <module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
-		<module>itests</module>
 		<module>clients</module>
+		<module>itests</module>
 		<module>web</module>
 	</modules>
 	<build>
