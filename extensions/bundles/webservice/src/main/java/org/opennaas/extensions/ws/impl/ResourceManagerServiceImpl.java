@@ -15,7 +15,7 @@ import org.opennaas.extensions.ws.services.IResourceManagerService;
 /**
  * @author Isart Canyameres
  */
-@WebService
+@WebService(portName = "ResourceManagerServicePort", serviceName = "ResourceManagerServiceService", targetNamespace = "http:/www.opennaas.org/ws")
 public class ResourceManagerServiceImpl implements IResourceManagerService {
 
 	private IResourceManager	resourceManager;
