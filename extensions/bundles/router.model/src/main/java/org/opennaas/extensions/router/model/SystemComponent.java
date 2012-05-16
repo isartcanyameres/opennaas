@@ -5,7 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemComponent as well as methods comparable to the
@@ -20,6 +22,7 @@ import java.io.*;
  * exists independently of any internal components, software, and so on. In fact, again, a Dependency relationship is true where a ComputerSystem is
  * Dependent on its packaging, as described by the ComputerSystemPackage association.
  */
+@XmlSeeAlso(SystemDevice.class)
 public class SystemComponent extends Component implements Serializable {
 
 	/**

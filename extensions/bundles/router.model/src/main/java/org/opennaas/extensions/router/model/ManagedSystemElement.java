@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedSystemElement as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the ManagedSystemElementBean Interface. The CIM class ManagedSystemElement is
@@ -19,6 +21,7 @@ import java.util.List;
  * system components such as files, processes, and threads - device components such as disk drives, controllers, processors, and printers - physical
  * components such as chips and cards.
  */
+@XmlSeeAlso(LogicalElement.class)
 public class ManagedSystemElement extends ManagedElement implements
 		Serializable {
 

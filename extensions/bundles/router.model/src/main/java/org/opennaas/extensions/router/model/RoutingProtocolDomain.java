@@ -5,7 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class RoutingProtocolDomain as well as methods comparable to
@@ -17,6 +19,7 @@ import java.io.*;
  * represent the entire routing domain in every case. For example for OSPF, it represents an Area, but in the case of RIP, it represents the whole RIP
  * domain. Any common attributes of these routing domains can be placed in this class in future versions of CIM.
  */
+@XmlSeeAlso(OSPFArea.class)
 public class RoutingProtocolDomain extends AdminDomain implements Serializable
 {
 

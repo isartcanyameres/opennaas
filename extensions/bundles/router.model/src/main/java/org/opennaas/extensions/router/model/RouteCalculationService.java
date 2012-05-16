@@ -5,8 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class RouteCalculationService as well as methods comparable
@@ -20,6 +21,7 @@ import java.lang.Exception;
  * superclass will be removed, and RouteCalculationService will subclass from CIM_Service directly. Also note that there are a large number of
  * additional routing protocols that are not currently modeled. These will be added over time.
  */
+@XmlSeeAlso(OSPFService.class)
 public class RouteCalculationService extends NetworkService implements
 		Serializable {
 

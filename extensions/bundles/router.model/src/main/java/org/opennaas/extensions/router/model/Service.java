@@ -8,6 +8,8 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class Service as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ServiceBean Interface. The CIM class Service is described as follows:
@@ -16,6 +18,7 @@ import java.util.List;
  * seperately modeled entity such as a LogicalDevice or a SoftwareFeature, or both. The modeled Service typically provides only functionality required
  * for management of itself or the elements it affects.
  */
+@XmlSeeAlso({ GREService.class, GRETunnelService.class, NetworkService.class })
 public class Service extends EnabledLogicalElement implements Serializable {
 
 	/* HOSTED SERVICE */

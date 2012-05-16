@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.opennaas.core.resources.IModel;
@@ -22,6 +23,7 @@ import org.opennaas.core.resources.IModel;
  * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the CIM
  * Schema.
  */
+@XmlSeeAlso({ ManagedSystemElement.class, NextHopRoute.class })
 public class ManagedElement implements IModel, Serializable {
 
 	private static final long	serialVersionUID	= 3787493356525574746L;

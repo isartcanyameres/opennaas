@@ -5,8 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkService as well as methods comparable to the
@@ -16,6 +17,7 @@ import java.lang.Exception;
  * subclassed instead. Distinguishing between services that modify traffic versus supporting basic communication has not proved useful.
  */
 @Deprecated
+@XmlSeeAlso(RouteCalculationService.class)
 public class NetworkService extends Service implements Serializable {
 
 	/**

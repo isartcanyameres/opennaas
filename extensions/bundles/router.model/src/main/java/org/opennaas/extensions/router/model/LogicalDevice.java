@@ -8,6 +8,7 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  * threshold settings. Various configurations could exist for a LogicalDevice. These configurations could be contained in Setting objects and
  * associated with the LogicalDevice.
  */
+@XmlSeeAlso({ LogicalModule.class, LogicalPort.class })
 public class LogicalDevice extends EnabledLogicalElement implements
 		Serializable {
 

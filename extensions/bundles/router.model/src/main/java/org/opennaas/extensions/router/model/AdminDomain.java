@@ -7,7 +7,7 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  * of devices plays an essential role in ensuring that the same administrative policy and actions are applied to all of the devices in the grouping.
  * The specific behavior and/or semantics of the AdminDomain can be identified through its aggregated and associated entities.
  */
+@XmlSeeAlso(RoutingProtocolDomain.class)
 public class AdminDomain extends System implements Serializable {
 
 	private static final long	serialVersionUID	= 6527668458787487083L;

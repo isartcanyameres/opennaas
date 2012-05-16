@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class System as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the SystemBean Interface. The CIM class System is described as follows:
@@ -22,6 +24,7 @@ import java.util.List;
  * that System is a subclass of EnabledLogicalElement which allows the entire abstraction to be functionally enabled or disabled at a higher level
  * than enabling or disabling its component parts.
  */
+@XmlSeeAlso({ AdminDomain.class, ComputerSystem.class })
 public class System extends EnabledLogicalElement implements Serializable {
 
 	/**

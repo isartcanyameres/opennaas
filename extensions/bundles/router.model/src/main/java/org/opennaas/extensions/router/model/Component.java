@@ -7,6 +7,8 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class Component as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ComponentBean Interface. The CIM class Component is described as follows:
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * CIM_Component is a generic association used to establish 'part of' relationships between Managed Elements. For example, it could be used to define
  * the components or parts of a System.
  */
+@XmlSeeAlso({ EndpointInArea.class, ModulePort.class, SystemComponent.class })
 public class Component extends Association implements Serializable {
 
 	/**
