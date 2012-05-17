@@ -3,6 +3,11 @@
  */
 package org.opennaas.web.ws;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
 import org.apache.cxf.endpoint.Client;
@@ -40,7 +45,8 @@ import org.opennaas.ws.StaticRouteCapabilityService;
  */
 public class OpennaasClient {
 
-	private static final String						endpoint						= "http://localhost:8182/cxf/";
+	private static final String						endpoint						= ResourceBundle.getBundle("ApplicationResources").getString(
+																							"ws.url");
 	private static IChassisCapabilityService		chassisCapabilityService		= null;
 	private static IGRETunnelCapabilityService		greTunnelCapabilityService		= null;
 	private static IIPCapabilityService				ipCapabilityService				= null;
@@ -186,11 +192,17 @@ public class OpennaasClient {
 	 */
 	public static IResourceManagerService getResourceManagerService() {
 		if (resourceManagerService == null) {
-			ResourceManagerService resourceManager = new ResourceManagerService();
-			resourceManagerService = resourceManager.getResourceManagerPort();
-			changeTimeout(ClientProxy.getClient(resourceManagerService), 5 * 60 * 1000);
-			((BindingProvider) resourceManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-					endpoint + "resourceManagerService?wsdl");
+			try {
+				ResourceManagerService resourceManager = new ResourceManagerService(new URL(
+						endpoint + "resourceManagerService?wsdl"),
+						new QName("http://impl.ws.extensions.opennaas.org/", "ResourceManagerServiceImplService"));
+				resourceManagerService = resourceManager.getResourceManagerPort();
+				changeTimeout(ClientProxy.getClient(resourceManagerService), 5 * 60 * 1000);
+				((BindingProvider) resourceManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+						endpoint + "resourceManagerService?wsdl");
+			} catch (MalformedURLException e) {
+				throw new RuntimeException("Failed to create service ResourceManagerService", e);
+			}
 		}
 		return resourceManagerService;
 	}
@@ -201,10 +213,16 @@ public class OpennaasClient {
 	 */
 	public static IProtocolSessionManagerService getProtocolSessionManagerService() {
 		if (protocolSessionManagerService == null) {
-			ProtocolSessionManagerService protocolSession = new ProtocolSessionManagerService();
-			protocolSessionManagerService = protocolSession.getProtocolSessionManagerPort();
-			((BindingProvider) protocolSessionManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-					endpoint + "protocolSessionManagerService?wsdl");
+			try {
+				ProtocolSessionManagerService protocolSession = new ProtocolSessionManagerService(new URL(
+						endpoint + "protocolSessionManagerService?wsdl"),
+						new QName("http://impl.ws.extensions.opennaas.org/", "ProtocolSessionManagerServiceImplService"));
+				protocolSessionManagerService = protocolSession.getProtocolSessionManagerPort();
+				((BindingProvider) protocolSessionManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+						endpoint + "protocolSessionManagerService?wsdl");
+			} catch (MalformedURLException e) {
+				throw new RuntimeException("Failed to create service ResourceManagerService", e);
+			}
 		}
 		return protocolSessionManagerService;
 	}
