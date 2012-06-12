@@ -2,14 +2,14 @@ package org.opennaas.extensions.roadm.capability.connections;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.roadm.capability.connections.actionset.IConnectionsCapabilityActionFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -72,6 +72,31 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
+	/**
+	 * 
+	 * @return the OSGI registered Factory for ConnectionsCapabilityAction
+	 * @throws ActivatorException
+	 */
+	public static IConnectionsCapabilityActionFactory getConnectionsCapabilityActionFactory() throws ActivatorException {
+		try {
+			log.debug("Calling getConnectionsCapabilityActionFactory");
+			return (IConnectionsCapabilityActionFactory) getServiceFromRegistry(context,
+					createFilterConnectionsActionFactory("proteus", "1.0"));
+
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
+
+	}
+
+	private static Filter createFilterConnectionsActionFactory(String name, String version) throws InvalidSyntaxException {
+		Properties properties = new Properties();
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "connections");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
+		return createServiceFilter(IConnectionsCapabilityActionFactory.class.getName(), properties);
 	}
 
 }

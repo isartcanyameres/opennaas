@@ -10,17 +10,20 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.roadm.capability.connections.actionset.ConnectionsCapabilityActionFactory;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 
 public class ConnectionsCapability extends AbstractCapability implements IConnectionsCapability {
 
-	public static final String	CAPABILITY_TYPE	= "connections";
+	public static final String							CAPABILITY_TYPE	= "connections";
 
-	public static String		CONNECTIONS		= CAPABILITY_TYPE;
+	public static String								CONNECTIONS		= CAPABILITY_TYPE;
 
-	Log							log				= LogFactory.getLog(ConnectionsCapability.class);
+	Log													log				= LogFactory.getLog(ConnectionsCapability.class);
 
-	private String				resourceId		= "";
+	private String										resourceId		= "";
+
+	public static ConnectionsCapabilityActionFactory	actionFactory	= null;
 
 	public ConnectionsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -70,7 +73,9 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 			throws CapabilityException {
 
 		log.info("Start of makeConnection call");
-		IAction action = createActionAndCheckParams(ConnectionsActionSet.MAKE_CONNECTION, connectionRequest);
+		// IAction action = createActionAndCheckParams(ConnectionsActionSet.MAKE_CONNECTION, connectionRequest);
+		IAction action = getActionFactory().createMakeConnectionAction(connectionRequest);
+
 		queueAction(action);
 		log.info("End of makeConnection call");
 
@@ -80,10 +85,22 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 	public void removeConnection(FiberConnection connectionRequest)
 			throws CapabilityException {
 		log.info("Start of removeConnection call");
-		IAction action = createActionAndCheckParams(ConnectionsActionSet.REMOVE_CONNECTION, connectionRequest);
+		// old way , before redesign
+		// IAction action = createActionAndCheckParams(ConnectionsActionSet.REMOVE_CONNECTION, connectionRequest);
+		// new way after re-design
+		IAction action = getActionFactory().createRemoveConectionAction(connectionRequest);
+
 		queueAction(action);
 		log.info("End of removeConnection call");
 
+	}
+
+	public ConnectionsCapabilityActionFactory getActionFactory() throws CapabilityException {
+
+		if (null == actionFactory) {
+			actionFactory = new ConnectionsCapabilityActionFactory();
+		}
+		return actionFactory;
 	}
 
 }

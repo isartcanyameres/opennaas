@@ -32,4 +32,19 @@
 			<entry key="actionset.version" value="1.0"/>
 		</service-properties>
 	</service>
+	
+	
+	<!--  publish connections Action factory services-->
+	<bean id="connectionsActionFactory" class="org.opennaas.extensions.roadm.wonesys.actionsets.actions.ConnectionsCapabilityActionFactory"/>
+
+	<!-- Register the ConnectionsCapabilityActionFactory as an OSGI service (in Capability)-->
+	<service ref="connectionsActionFactory" interface="org.opennaas.extensions.roadm.capability.connections.actionset.IConnectionsCapabilityActionFactory">
+		<service-properties>
+			<entry key="actionset.name" value="proteus"/> 
+			<entry key="actionset.capability" value="connections"/>
+			<entry key="actionset.version" value="1.0"/>		
+		</service-properties>
+	</service>
+		
+	
 </blueprint>

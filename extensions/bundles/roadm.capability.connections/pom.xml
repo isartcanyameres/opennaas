@@ -60,9 +60,10 @@
 							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
 							*
 							</Import-Package>
-						<Export-Package>
-							org.opennaas.extensions.roadm.capability.connections;version="${project.version}"
-						</Export-Package>
+					<Export-Package>
+						org.opennaas.extensions.roadm.capability.connections;version="${project.version}",
+						org.opennaas.extensions.roadm.capability.connections.actionset;version="${project.version}"
+					</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
