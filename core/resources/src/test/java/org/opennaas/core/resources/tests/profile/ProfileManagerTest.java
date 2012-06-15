@@ -9,9 +9,11 @@ import org.junit.Test;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.mock.MockActionId;
 import org.opennaas.core.resources.mock.MockActionSet;
 import org.opennaas.core.resources.mock.MockDummyAction;
 import org.opennaas.core.resources.mock.MockProfile;
@@ -22,12 +24,12 @@ import org.opennaas.core.resources.profile.ProfileManager;
 
 public class ProfileManagerTest {
 
-	Log		logger			= LogFactory.getLog(ProfileManagerTest.class);
+	Log			logger			= LogFactory.getLog(ProfileManagerTest.class);
 
-	String	profileName		= "mockProfile";
-	String	capabilityId	= "chassis";
-	String	resourceType	= "router";
-	String	actionId		= "setInterface";
+	String		profileName		= "mockProfile";
+	String		capabilityId	= "chassis";
+	String		resourceType	= "router";
+	IActionId	actionId		= MockActionId.MOCK_ACTION;
 
 	@Test
 	public void testProfileManagerAddRemove() {

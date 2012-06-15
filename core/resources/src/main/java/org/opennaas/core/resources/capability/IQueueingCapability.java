@@ -1,6 +1,7 @@
 package org.opennaas.core.resources.capability;
 
 import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.action.IActionSet;
 
 public interface IQueueingCapability extends ICapability {
@@ -12,7 +13,7 @@ public interface IQueueingCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public IAction createAction(String actionId) throws CapabilityException;
+	public IAction createAction(IActionId actionId) throws CapabilityException;
 
 	/**
 	 * Adds given action at the end of the queue.

@@ -67,10 +67,10 @@ public class QueueResponse {
 
 	public static QueueResponse newQueueResponse(List<IAction> actions) {
 		QueueResponse queueResponse = new QueueResponse();
-		queueResponse.setPrepareResponse(ActionResponse.newPendingAction(QueueConstants.PREPARE));
-		queueResponse.setConfirmResponse(ActionResponse.newPendingAction(QueueConstants.CONFIRM));
-		queueResponse.setRestoreResponse(ActionResponse.newPendingAction(QueueConstants.RESTORE));
-		queueResponse.setRefreshResponse(ActionResponse.newPendingAction(QueueConstants.REFRESH));
+		queueResponse.setPrepareResponse(ActionResponse.newPendingAction(QueueConstants.ActionId.PREPARE));
+		queueResponse.setConfirmResponse(ActionResponse.newPendingAction(QueueConstants.ActionId.CONFIRM));
+		queueResponse.setRestoreResponse(ActionResponse.newPendingAction(QueueConstants.ActionId.RESTORE));
+		queueResponse.setRefreshResponse(ActionResponse.newPendingAction(QueueConstants.ActionId.REFRESH));
 
 		Vector<ActionResponse> responses = new Vector<ActionResponse>();
 		for (IAction action : actions)

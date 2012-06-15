@@ -5,33 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-@SuppressWarnings({ })
-public class ActionSet implements IActionSet {
+@SuppressWarnings({})
+public abstract class ActionSet implements IActionSet {
 	public String								actionsetId		= null;
 
-	HashMap<String, Class<? extends Action>>	actions			= new HashMap<String, Class<? extends Action>>();
-	HashMap<String, Properties>					actionParams	= new HashMap<String, Properties>();
+	HashMap<IActionId, Class<? extends Action>>	actions			= new HashMap<IActionId, Class<? extends Action>>();
+	HashMap<IActionId, Properties>				actionParams	= new HashMap<IActionId, Properties>();
 
-	protected List<String>						refreshActions	= new ArrayList();
+	protected List<IActionId>					refreshActions	= new ArrayList<IActionId>();
 	protected Object							refreshParam	= null;
 
-	public Class<? extends Action> putAction(String key, Class<? extends Action> value) {
+	public Class<? extends Action> putAction(IActionId key, Class<? extends Action> value) {
 		return actions.put(key, value);
 	}
 
-	public Properties putActionParams(String key, Properties value) {
+	public Properties putActionParams(IActionId key, Properties value) {
 		return actionParams.put(key, value);
 	}
 
-	public Class<? extends Action> getAction(String actionId) {
+	public Class<? extends Action> getAction(IActionId actionId) {
 		return actions.get(actionId);
 	}
 
-	public Properties getActionParams(String actionId) {
+	public Properties getActionParams(IActionId actionId) {
 		return actionParams.get(actionId);
 	}
 
-	public Action obtainAction(String actionId) throws ActionException {
+	public Action obtainAction(IActionId actionId) throws ActionException {
 		Class<? extends Action> actionClass = actions.get(actionId);
 		Action action = null;
 		if (actionClass != null) {
@@ -54,11 +54,11 @@ public class ActionSet implements IActionSet {
 		return action;
 	}
 
-	public List<String> getActionNames() {
-		ArrayList<String> names = new ArrayList<String>();
-		names.addAll(actions.keySet());
-		return names;
-	}
+	// public List<String> getActionNames() {
+	// ArrayList<String> names = new ArrayList<String>();
+	// names.addAll(actions.keySet());
+	// return names;
+	// }
 
 	public String getActionSetId() {
 		return actionsetId;
@@ -68,7 +68,7 @@ public class ActionSet implements IActionSet {
 		this.actionsetId = actionSetId;
 	}
 
-	public List<String> getRefreshActionName() {
+	public List<IActionId> getRefreshActionName() {
 		return refreshActions;
 	}
 

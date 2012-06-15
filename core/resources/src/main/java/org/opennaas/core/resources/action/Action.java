@@ -11,7 +11,7 @@ public abstract class Action implements IAction {
 	// FIXME what model is the entire model or the one for change from the command
 	protected IModel	modelToUpdate;
 	protected Object	params			= null;
-	protected String	actionID		= null;
+	protected IActionId	actionID		= null;
 
 	protected Object	behaviorParams	= null;
 
@@ -31,11 +31,11 @@ public abstract class Action implements IAction {
 		this.params = params;
 	}
 
-	public String getActionID() {
+	public IActionId getActionID() {
 		return actionID;
 	}
 
-	public void setActionID(String actionID) {
+	public void setActionID(IActionId actionID) {
 		this.actionID = actionID;
 	}
 

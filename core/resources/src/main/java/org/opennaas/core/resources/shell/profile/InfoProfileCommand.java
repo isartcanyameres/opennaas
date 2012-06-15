@@ -2,10 +2,10 @@ package org.opennaas.core.resources.shell.profile;
 
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
@@ -13,9 +13,9 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Show the Profile information of one or more resources
- *
+ * 
  * @author Evelyn Torras
- *
+ * 
  */
 @Command(scope = "profile", name = "info", description = "Provides extended information about one or more profiles.")
 public class InfoProfileCommand extends GenericKarafCommand {
@@ -46,7 +46,7 @@ public class InfoProfileCommand extends GenericKarafCommand {
 						printInfo(doubleTab + "Capability " + capabilityId + " with ActionSetId " + profile.getActionSetForCapability(
 								capabilityId)
 								.getActionSetId());
-						for (String actionName : profile.getActionSetForCapability(capabilityId).getActionNames()) {
+						for (IActionId actionName : profile.getActionSetForCapability(capabilityId).getDefinition().getActionIds()) {
 							printInfo(doubleTab + indexArrowRigth + "Action: " + actionName);
 						}
 					}
@@ -58,7 +58,7 @@ public class InfoProfileCommand extends GenericKarafCommand {
 					}
 					for (IResource resource : resources) {
 						printInfo("Resource: " + resource.getResourceDescriptor().getInformation().getType() + ":" + resource
-										.getResourceDescriptor().getInformation().getName());
+								.getResourceDescriptor().getInformation().getName());
 
 						// for (String capabilityId : resource.getProfile().getActionSets().keySet()) {
 						// out.println("	Capability: " + capabilityId + " ActionSet: " + resource.getProfile()

@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Vector;
 
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.command.Response;
-
 
 public class MockActionFactory {
 
-	public static IAction newMockActionAnError(String actionID) {
+	public static IAction newMockActionAnError(IActionId actionID) {
 		MockAction action = new MockAction();
 		action.setActionID(actionID);
 		/* build responses */
@@ -32,7 +32,7 @@ public class MockActionFactory {
 
 	}
 
-	public static IAction newMockActionVariousError(String actionID) {
+	public static IAction newMockActionVariousError(IActionId actionID) {
 		MockAction action = new MockAction();
 		action.setActionID(actionID);
 		/* build responses */
@@ -58,7 +58,7 @@ public class MockActionFactory {
 		return action;
 	}
 
-	public static IAction newMockActionOK(String actionID) {
+	public static IAction newMockActionOK(IActionId actionID) {
 		MockAction action = new MockAction();
 		action.setActionID(actionID);
 
@@ -75,7 +75,7 @@ public class MockActionFactory {
 		return action;
 	}
 
-	public static IAction newMockActionDiffsCommandOks(String actionID) {
+	public static IAction newMockActionDiffsCommandOks(IActionId actionID) {
 		MockAction action = new MockAction();
 		action.setActionID(actionID);
 
@@ -94,8 +94,8 @@ public class MockActionFactory {
 
 		return action;
 	}
-	
-	public static IAction newMockActionExceptionOnExecute(String actionID) {
+
+	public static IAction newMockActionExceptionOnExecute(IActionId actionID) {
 		MockActionExceptionOnExecute action = new MockActionExceptionOnExecute();
 		action.setActionID(actionID);
 

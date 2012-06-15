@@ -8,14 +8,14 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 public class MockActionOk extends Action {
 
 	public MockActionOk() {
-		actionID = "MockAtionOk";
+		actionID = MockActionId.MOCK_ACTION_OK;
 	}
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 			throws ActionException {
 
-		return ActionResponse.okResponse("MockAtionOk");
+		return ActionResponse.okResponse(actionID);
 	}
 
 	@Override

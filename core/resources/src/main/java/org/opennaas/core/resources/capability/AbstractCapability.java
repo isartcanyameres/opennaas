@@ -11,6 +11,7 @@ import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
@@ -181,7 +182,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	// protected abstract IQueueManagerCapability getQueueManager() throws CapabilityException;
 
 	@Override
-	public IAction createAction(String actionId) throws CapabilityException {
+	public IAction createAction(IActionId actionId) throws CapabilityException {
 
 		try {
 			log.debug("Trying to use profile");
@@ -206,7 +207,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @throws ActionException
 	 *             if there is a problem instantiating the action
 	 */
-	private Action loadActionFromProfile(String actionId) throws ActionException {
+	private Action loadActionFromProfile(IActionId actionId) throws ActionException {
 		IProfile profile = resource.getProfile();
 
 		ActionSet actionSet = null;
@@ -230,7 +231,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @throws CapabilityException
 	 *             if an error occurs creating the action or checking it's parameters.
 	 */
-	protected IAction createActionAndCheckParams(String actionId, Object actionParameters) throws CapabilityException {
+	protected IAction createActionAndCheckParams(IActionId actionId, Object actionParameters) throws CapabilityException {
 
 		IAction action = createAction(actionId);
 		action.setParams(actionParameters);
@@ -256,11 +257,11 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 */
 	public void sendRefreshActions(List<Object> params) throws CapabilityException {
 
-		List<String> refreshActions = getActionSet().getRefreshActionName();
+		List<IActionId> refreshActions = getActionSet().getRefreshActionName();
 
 		IAction action;
 		int numAction = 0;
-		for (String refreshAction : refreshActions) {
+		for (IActionId refreshAction : refreshActions) {
 			Object param = null;
 			if (numAction < params.size()) {
 				param = params.get(numAction);

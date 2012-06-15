@@ -5,22 +5,21 @@ import java.util.List;
 
 import org.opennaas.core.resources.command.Response;
 
-
 public class ActionResponse {
 	public enum STATUS {
 		ERROR, OK, PENDING
 	};
 
 	private STATUS			status		= STATUS.PENDING;
-	private String			actionID;
+	private IActionId		actionID;
 	private String			information;
 	private List<Response>	responses	= new ArrayList<Response>();
 
-	public String getActionID() {
+	public IActionId getActionID() {
 		return actionID;
 	}
 
-	public void setActionID(String actionID) {
+	public void setActionID(IActionId actionID) {
 		this.actionID = actionID;
 	}
 
@@ -52,7 +51,7 @@ public class ActionResponse {
 		this.status = status;
 	}
 
-	public static ActionResponse newPendingAction(String actionID) {
+	public static ActionResponse newPendingAction(IActionId actionID) {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(actionID);
 		actionResponse.setStatus(STATUS.PENDING);
@@ -60,47 +59,47 @@ public class ActionResponse {
 	}
 
 	@Deprecated
-	public static ActionResponse newOkAction(String actionID) {
+	public static ActionResponse newOkAction(IActionId actionID) {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(actionID);
 		actionResponse.setStatus(STATUS.OK);
 		return actionResponse;
 	}
 
-	public static ActionResponse okResponse(String actionID) {
+	public static ActionResponse okResponse(IActionId actionID) {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(actionID);
 		actionResponse.setStatus(STATUS.OK);
 		return actionResponse;
 	}
 
-	public static ActionResponse okResponse(String actionID, String information) {
+	public static ActionResponse okResponse(IActionId actionID, String information) {
 		ActionResponse response = okResponse(actionID);
 		response.setInformation(information);
 		return response;
 	}
 
-	public static ActionResponse okResponse(String actionID, String information, List<Response> responses) {
+	public static ActionResponse okResponse(IActionId actionID, String information, List<Response> responses) {
 		ActionResponse response = okResponse(actionID);
 		response.setInformation(information);
 		response.setResponses(responses);
 		return response;
 	}
 
-	public static ActionResponse errorResponse(String actionID) {
+	public static ActionResponse errorResponse(IActionId actionID) {
 		ActionResponse response = new ActionResponse();
 		response.setActionID(actionID);
 		response.setStatus(STATUS.ERROR);
 		return response;
 	}
 
-	public static ActionResponse errorResponse(String actionID, String information) {
+	public static ActionResponse errorResponse(IActionId actionID, String information) {
 		ActionResponse response = errorResponse(actionID);
 		response.setInformation(information);
 		return response;
 	}
 
-	public static ActionResponse errorResponse(String actionID, String information, List<Response> responses) {
+	public static ActionResponse errorResponse(IActionId actionID, String information, List<Response> responses) {
 		ActionResponse response = errorResponse(actionID);
 		response.setInformation(information);
 		response.setResponses(responses);
