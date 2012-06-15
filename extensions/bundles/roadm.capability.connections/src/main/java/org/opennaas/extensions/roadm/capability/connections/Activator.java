@@ -79,11 +79,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 * @return the OSGI registered Factory for ConnectionsCapabilityAction
 	 * @throws ActivatorException
 	 */
-	public static IConnectionsCapabilityActionFactory getConnectionsCapabilityActionFactory() throws ActivatorException {
+	public static IConnectionsCapabilityActionFactory getConnectionsCapabilityActionFactory(String name, String version) throws ActivatorException {
 		try {
 			log.debug("Calling getConnectionsCapabilityActionFactory");
 			return (IConnectionsCapabilityActionFactory) getServiceFromRegistry(context,
-					createFilterConnectionsActionFactory("proteus", "1.0"));
+					createFilterConnectionsActionFactory(name, version));
 
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
@@ -97,6 +97,24 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IConnectionsCapabilityActionFactory.class.getName(), properties);
+	}
+
+	public static Object getActionSetService(String capability, String actionSetName, String actionSetVersion, String serviceInterface)
+			throws ActivatorException {
+		try {
+			log.debug("Calling getActionSetService");
+
+			Properties properties = new Properties();
+			properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, capability);
+			properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, actionSetName);
+			properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, actionSetVersion);
+
+			Filter serviceFilter = createServiceFilter(serviceInterface, properties);
+			return getServiceFromRegistry(context, serviceFilter);
+
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
 	}
 
 }

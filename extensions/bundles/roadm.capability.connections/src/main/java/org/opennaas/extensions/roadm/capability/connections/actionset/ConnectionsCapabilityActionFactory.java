@@ -5,6 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.roadm.capability.connections.Activator;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 
@@ -14,46 +17,60 @@ import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
  */
 public class ConnectionsCapabilityActionFactory implements IConnectionsCapabilityActionFactory {
 
-	static Log	log	= LogFactory.getLog(ConnectionsCapabilityActionFactory.class);
+	static Log		log	= LogFactory.getLog(ConnectionsCapabilityActionFactory.class);
 
-	private static IConnectionsCapabilityActionFactory getConnectionsActionFactoryService() throws ActivatorException {
+	private String	actionSetName;
+	private String	actionSetVersion;
+	private String	capabilityName;
 
-		try {
-			log.debug("Calling getConnectionsActionFactorytService");
+	IActionSet		profileActionSet;
 
-			return (IConnectionsCapabilityActionFactory) Activator.getConnectionsCapabilityActionFactory();
-		} catch (Exception e) {
-			return null;
-		}
+	public ConnectionsCapabilityActionFactory(CapabilityDescriptor descriptor) {
+		this.actionSetName = descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		this.actionSetVersion = descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+		this.capabilityName = descriptor.getCapabilityInformation().getType();
 	}
 
 	@Override
 	public IAction createMakeConnectionAction(FiberConnection p1) throws ActionException {
-
 		try {
-
-			return getConnectionsActionFactoryService().createMakeConnectionAction(p1);
+			return getImplementation().createMakeConnectionAction(p1);
 		} catch (ActivatorException e) {
-			throw new ActionException();
+			throw new ActionException(e);
 		}
 	}
 
 	@Override
 	public IAction createRemoveConectionAction(FiberConnection p1) throws ActionException {
 		try {
-			return getConnectionsActionFactoryService().createRemoveConectionAction(p1);
+			return getImplementation().createRemoveConectionAction(p1);
 		} catch (ActivatorException e) {
-			throw new ActionException();
+			throw new ActionException(e);
 		}
 	}
 
 	@Override
-	public IAction createRefreshModelConnectionsAction(FiberConnection p1) throws ActionException {
+	public IAction createRefreshModelConnectionsAction() throws ActionException {
 		try {
-			return getConnectionsActionFactoryService().createRefreshModelConnectionsAction(p1);
+			return getImplementation().createRefreshModelConnectionsAction();
 		} catch (ActivatorException e) {
-			throw new ActionException();
+			throw new ActionException(e);
 		}
+	}
+
+	private IConnectionsCapabilityActionFactory getImplementation() throws ActivatorException {
+		log.debug("Calling getConnectionsActionFactoryService");
+		return (IConnectionsCapabilityActionFactory) Activator.getActionSetService(capabilityName, actionSetName, actionSetVersion,
+				IConnectionsCapabilityActionFactory.class.getName());
+	}
+
+	private IConnectionsCapabilityActionFactory getSuitableActionFactoryFromProfile(String actionId) {
+		if (profileActionSet != null) {
+			if (profileActionSet.getActionNames().contains(actionId)) {
+				return (IConnectionsCapabilityActionFactory) profileActionSet.getActionsFactory();
+			}
+		}
+		return null;
 	}
 
 }

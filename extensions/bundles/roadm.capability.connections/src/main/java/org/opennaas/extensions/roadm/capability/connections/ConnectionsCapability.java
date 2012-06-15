@@ -11,23 +11,25 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.roadm.capability.connections.actionset.ConnectionsCapabilityActionFactory;
+import org.opennaas.extensions.roadm.capability.connections.actionset.IConnectionsCapabilityActionFactory;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 
 public class ConnectionsCapability extends AbstractCapability implements IConnectionsCapability {
 
-	public static final String							CAPABILITY_TYPE	= "connections";
+	public static final String					CAPABILITY_TYPE	= "connections";
 
-	public static String								CONNECTIONS		= CAPABILITY_TYPE;
+	public static String						CONNECTIONS		= CAPABILITY_TYPE;
 
-	Log													log				= LogFactory.getLog(ConnectionsCapability.class);
+	Log											log				= LogFactory.getLog(ConnectionsCapability.class);
 
-	private String										resourceId		= "";
+	private String								resourceId		= "";
 
-	public static ConnectionsCapabilityActionFactory	actionFactory	= null;
+	private IConnectionsCapabilityActionFactory	actionFactory	= null;
 
 	public ConnectionsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
+		actionFactory = new ConnectionsCapabilityActionFactory(descriptor);
 		log.debug("Built new Connections Capability");
 	}
 
@@ -92,14 +94,9 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 
 		queueAction(action);
 		log.info("End of removeConnection call");
-
 	}
 
-	public ConnectionsCapabilityActionFactory getActionFactory() throws CapabilityException {
-
-		if (null == actionFactory) {
-			actionFactory = new ConnectionsCapabilityActionFactory();
-		}
+	private IConnectionsCapabilityActionFactory getActionFactory() throws CapabilityException {
 		return actionFactory;
 	}
 

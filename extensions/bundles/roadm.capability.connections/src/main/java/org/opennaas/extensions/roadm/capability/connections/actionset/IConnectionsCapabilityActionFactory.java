@@ -16,6 +16,6 @@ public interface IConnectionsCapabilityActionFactory {
 
 	IAction createRemoveConectionAction(FiberConnection p1) throws ActionException;
 
-	IAction createRefreshModelConnectionsAction(FiberConnection p1) throws ActionException;
+	IAction createRefreshModelConnectionsAction() throws ActionException;
 
 }

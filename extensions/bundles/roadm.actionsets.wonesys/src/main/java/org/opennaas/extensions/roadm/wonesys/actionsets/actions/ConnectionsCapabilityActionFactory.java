@@ -34,17 +34,21 @@ public class ConnectionsCapabilityActionFactory implements IConnectionsCapabilit
 	@Override
 	public IAction createMakeConnectionAction(FiberConnection p1) throws ActionException {
 
-		return obtainAction(ActionConstants.MAKECONNECTION);
+		IAction action = obtainAction(ActionConstants.MAKECONNECTION);
+		action.setParams(p1);
+		return action;
 	}
 
 	@Override
 	public IAction createRemoveConectionAction(FiberConnection p1) throws ActionException {
 
-		return obtainAction(ActionConstants.REMOVECONNECTION);
+		IAction action = obtainAction(ActionConstants.REMOVECONNECTION);
+		action.setParams(p1);
+		return action;
 	}
 
 	@Override
-	public IAction createRefreshModelConnectionsAction(FiberConnection p1) throws ActionException {
+	public IAction createRefreshModelConnectionsAction() throws ActionException {
 
 		return obtainAction(ActionConstants.REFRESHCONNECTIONS);
 	}
