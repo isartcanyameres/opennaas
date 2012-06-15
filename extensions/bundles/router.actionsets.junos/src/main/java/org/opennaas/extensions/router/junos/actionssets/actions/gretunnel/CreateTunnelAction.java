@@ -3,19 +3,17 @@ package org.opennaas.extensions.router.junos.actionssets.actions.gretunnel;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 public class CreateTunnelAction extends JunosAction {
 
@@ -29,7 +27,6 @@ public class CreateTunnelAction extends JunosAction {
 	}
 
 	public void initialize() {
-		this.setActionID(ActionConstants.CREATETUNNEL);
 		setTemplate("/VM_files/createTunnel.vm");
 		this.protocolName = "netconf";
 	}

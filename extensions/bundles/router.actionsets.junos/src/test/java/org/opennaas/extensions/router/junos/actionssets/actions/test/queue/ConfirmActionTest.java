@@ -57,7 +57,7 @@ public class ConfirmActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", QueueConstants.CONFIRM, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.ActionId.CONFIRM, action.getActionID());
 	}
 
 	@Test

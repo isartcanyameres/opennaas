@@ -18,7 +18,7 @@ import org.opennaas.core.resources.mock.MockEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.RemoveTaggedEthernetEncapsulationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetTaggedEthernetEncapsulationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetVlanIdAction;
@@ -73,9 +73,9 @@ public class ConfigureEncapsulationActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals(ActionConstants.SET_TAGGEDETHERNET_ENCAPSULATION, setEncapsulationAction.getActionID());
-		Assert.assertEquals(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION, removeEncapsulationAction.getActionID());
-		Assert.assertEquals(ActionConstants.SET_VLANID, setVlanAction.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.SET_TAGGEDETHERNET_ENCAPSULATION, setEncapsulationAction.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.REMOVE_TAGGEDETHERNET_ENCAPSULATION, removeEncapsulationAction.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.SET_VLANID, setVlanAction.getActionID());
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class ConfigureEncapsulationActionTest {
 
 		setVlanAction.setParams(feIface);
 		ActionResponse response = setVlanAction.execute(protocolSessionManager);
-		Assert.assertEquals(ActionConstants.SET_VLANID, response.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.SET_VLANID, response.getActionID());
 		List<Response> responses = response.getResponses();
 		for (Response resp : responses) {
 			Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -224,7 +224,7 @@ public class ConfigureEncapsulationActionTest {
 		// FIXME This test fails due to mock router not filering config
 		// setEncapsulationAction.setParams(phyFeIface);
 		// response = setEncapsulationAction.execute(protocolSessionManager);
-		// Assert.assertEquals(ActionConstants.SET_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
+		// Assert.assertEquals(ChassisActionSet.ActionId.SET_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
 		// responses = response.getResponses();
 		// for (Response resp : responses) {
 		// Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -233,7 +233,7 @@ public class ConfigureEncapsulationActionTest {
 		try {
 			removeEncapsulationAction.setParams(phyFeIface);
 			response = removeEncapsulationAction.execute(protocolSessionManager);
-			// Assert.assertEquals(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
+			// Assert.assertEquals(ChassisActionSet.ActionId.REMOVE_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
 			// responses = response.getResponses();
 			// for (Response resp : responses) {
 			// Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -252,7 +252,7 @@ public class ConfigureEncapsulationActionTest {
 
 		setVlanAction.setParams(ltIface);
 		ActionResponse response = setVlanAction.execute(protocolSessionManager);
-		Assert.assertEquals(ActionConstants.SET_VLANID, response.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.SET_VLANID, response.getActionID());
 		List<Response> responses = response.getResponses();
 		for (Response resp : responses) {
 			Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -261,7 +261,7 @@ public class ConfigureEncapsulationActionTest {
 		// FIXME This test fails due to mock router not filering config
 		// setEncapsulationAction.setParams(ltIface);
 		// response = setEncapsulationAction.execute(protocolSessionManager);
-		// Assert.assertEquals(ActionConstants.SET_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
+		// Assert.assertEquals(ChassisActionSet.ActionId.SET_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
 		// responses = response.getResponses();
 		// for (Response resp : responses) {
 		// Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -269,7 +269,7 @@ public class ConfigureEncapsulationActionTest {
 
 		removeEncapsulationAction.setParams(ltIface);
 		response = removeEncapsulationAction.execute(protocolSessionManager);
-		Assert.assertEquals(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
+		Assert.assertEquals(ChassisActionSet.ActionId.REMOVE_TAGGEDETHERNET_ENCAPSULATION, response.getActionID());
 		responses = response.getResponses();
 		for (Response resp : responses) {
 			Assert.assertEquals(Response.Status.OK, resp.getStatus());

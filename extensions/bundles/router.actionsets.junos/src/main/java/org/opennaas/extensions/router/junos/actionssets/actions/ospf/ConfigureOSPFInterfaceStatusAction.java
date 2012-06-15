@@ -4,23 +4,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.Service;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -35,7 +33,6 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 	 * 
 	 */
 	public ConfigureOSPFInterfaceStatusAction() {
-		setActionID(ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE);
 		setTemplate(VELOCITY_TEMPLATE);
 		this.protocolName = PROTOCOL_NAME;
 	}
@@ -56,7 +53,7 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 	}

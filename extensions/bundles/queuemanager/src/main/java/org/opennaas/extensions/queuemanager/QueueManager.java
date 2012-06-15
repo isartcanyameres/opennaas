@@ -232,7 +232,7 @@ public class QueueManager extends AbstractCapability implements
 							errorHappened = true;
 
 					} catch (ActionException e) {
-						queueResponse.setConfirmResponse(ActionResponse.errorResponse(QueueConstants.CONFIRM, e.getLocalizedMessage()));
+						queueResponse.setConfirmResponse(ActionResponse.errorResponse(QueueConstants.ActionId.CONFIRM, e.getLocalizedMessage()));
 						throw new CapabilityException(e);
 					}
 
@@ -452,7 +452,7 @@ public class QueueManager extends AbstractCapability implements
 	 * @throws ActionException
 	 */
 	private ActionResponse executeRefreshActions(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		ActionResponse refreshResponse = ActionResponse.okResponse(QueueConstants.REFRESH);
+		ActionResponse refreshResponse = ActionResponse.okResponse(QueueConstants.ActionId.REFRESH);
 		for (IAction action : queue) {
 			/* use pool for get protocol session */
 			log.debug("getting protocol session...");
@@ -482,7 +482,7 @@ public class QueueManager extends AbstractCapability implements
 			IProtocolSessionManager protocolSessionManager)
 			throws ActionException, CapabilityException {
 		IAction confirmAction = getActionSet().obtainAction(
-				QueueConstants.CONFIRM);
+				QueueConstants.ActionId.CONFIRM);
 		if (confirmAction == null) {
 			throw new CapabilityException("Error obtaining ConfirmAction");
 		}
@@ -503,7 +503,7 @@ public class QueueManager extends AbstractCapability implements
 			IProtocolSessionManager protocolSessionManager)
 			throws ActionException, CapabilityException {
 		IActionSet actionSet = getActionSet();
-		IAction prepareAction = actionSet.obtainAction(QueueConstants.PREPARE);
+		IAction prepareAction = actionSet.obtainAction(QueueConstants.ActionId.PREPARE);
 		return prepareAction.execute(protocolSessionManager);
 	}
 
@@ -519,7 +519,7 @@ public class QueueManager extends AbstractCapability implements
 			IProtocolSessionManager protocolSessionManager)
 			throws ActionException, CapabilityException {
 		IAction restoreAction = getActionSet().obtainAction(
-				QueueConstants.RESTORE);
+				QueueConstants.ActionId.RESTORE);
 		return restoreAction.execute(protocolSessionManager);
 	}
 

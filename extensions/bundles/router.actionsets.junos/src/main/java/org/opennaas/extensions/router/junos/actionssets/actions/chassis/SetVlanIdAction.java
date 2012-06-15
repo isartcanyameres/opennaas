@@ -11,7 +11,6 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants.TargetConfiguration;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
@@ -29,7 +28,6 @@ public class SetVlanIdAction extends JunosAction {
 	private String	getSubInterfaceTemplate	= "/VM_files/getSubInterface.vm";
 
 	public SetVlanIdAction() {
-		this.setActionID(ActionConstants.SET_VLANID);
 		this.protocolName = "netconf";
 	}
 

@@ -24,7 +24,11 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants.TargetConfiguration;
@@ -34,12 +38,6 @@ import org.opennaas.extensions.router.junos.commandsets.commands.JunosCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.ProtocolException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,7 +51,6 @@ public class RemoveInterfaceFromLogicalRouterAction extends JunosAction {
 	private String	deleteSubInterfaceTemplate	= "/VM_files/deletesubinterface.vm";
 
 	public RemoveInterfaceFromLogicalRouterAction() {
-		this.setActionID(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER);
 		this.protocolName = "netconf";
 	}
 
@@ -120,7 +117,7 @@ public class RemoveInterfaceFromLogicalRouterAction extends JunosAction {
 			validateAction(actionResponse);
 
 		} catch (ProtocolException e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 	}
 

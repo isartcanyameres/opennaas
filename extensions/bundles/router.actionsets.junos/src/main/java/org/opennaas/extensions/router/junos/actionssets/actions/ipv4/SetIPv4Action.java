@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -26,7 +25,6 @@ public class SetIPv4Action extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.SETIPv4);
 		setTemplate("/VM_files/configureIPv4.vm");
 		this.protocolName = "netconf";
 

@@ -54,8 +54,8 @@ public class PrepareRestoreActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", QueueConstants.RESTORE, restoreAction.getActionID());
-		Assert.assertEquals("Wrong ActionID", QueueConstants.PREPARE, prepareAction.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.ActionId.RESTORE, restoreAction.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.ActionId.PREPARE, prepareAction.getActionID());
 
 	}
 

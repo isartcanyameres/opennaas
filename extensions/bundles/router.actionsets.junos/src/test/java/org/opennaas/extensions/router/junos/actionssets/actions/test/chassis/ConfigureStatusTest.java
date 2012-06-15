@@ -18,7 +18,7 @@ import org.opennaas.core.resources.mock.MockEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.ConfigureStatusAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -56,7 +56,7 @@ public class ConfigureStatusTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.CONFIGURESTATUS, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", ChassisActionSet.ActionId.CONFIGURESTATUS, action.getActionID());
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ConfigureStatusTest {
 			action.setParams(newParamsConfigureStatus("fe-0/3/2", OperationalStatus.STOPPED));
 			ActionResponse response = action.execute(protocolSessionManager);
 
-			Assert.assertEquals(ActionConstants.CONFIGURESTATUS, response.getActionID());
+			Assert.assertEquals(ChassisActionSet.ActionId.CONFIGURESTATUS, response.getActionID());
 			List<Response> responses = response.getResponses();
 			for (Response resp : responses) {
 				Assert.assertEquals(Response.Status.OK, resp.getStatus());

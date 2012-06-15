@@ -16,7 +16,7 @@ import org.opennaas.core.resources.mock.MockEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.CreateLogicalRouterAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
@@ -52,7 +52,7 @@ public class CreateLogicalRouterActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.CREATELOGICALROUTER, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", ChassisActionSet.ActionId.CREATELOGICALROUTER, action.getActionID());
 	}
 
 	@Test

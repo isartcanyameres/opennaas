@@ -17,8 +17,8 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.mock.MockEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.queue.IsAliveAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
@@ -56,7 +56,7 @@ public class KeepAliveActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.ISALIVE, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.ActionId.ISALIVE, action.getActionID());
 	}
 
 	@Test

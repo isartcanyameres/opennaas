@@ -10,7 +10,6 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants.TargetConfiguration;
@@ -27,7 +26,6 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 	private String	getSubInterfaceTemplate	= "/VM_files/getSubInterface.vm";
 
 	public RemoveTaggedEthernetEncapsulationAction() {
-		this.setActionID(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION);
 		this.protocolName = "netconf";
 	}
 

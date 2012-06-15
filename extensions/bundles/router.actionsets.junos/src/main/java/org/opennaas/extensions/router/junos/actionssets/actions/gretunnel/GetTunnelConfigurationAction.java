@@ -3,7 +3,15 @@ package org.opennaas.extensions.router.junos.actionssets.actions.gretunnel;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import net.i2cat.netconf.rpc.Reply;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
@@ -15,15 +23,6 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
-import net.i2cat.netconf.rpc.Reply;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.CommandException;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.xml.sax.SAXException;
 
 public class GetTunnelConfigurationAction extends JunosAction {
@@ -39,7 +38,7 @@ public class GetTunnelConfigurationAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.GETTUNNELCONFIG);
+
 		setTemplate("/VM_files/getconfiguration.vm");
 		this.protocolName = "netconf";
 	}
@@ -52,7 +51,7 @@ public class GetTunnelConfigurationAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 

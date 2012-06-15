@@ -1,66 +1,56 @@
 package org.opennaas.extensions.router.junos.actionssets.tests;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.opennaas.extensions.router.junos.actionssets.QueueActionSet;
-import org.opennaas.core.resources.action.Action;
-import org.opennaas.core.resources.action.ActionException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.IActionId;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.extensions.router.junos.actionssets.QueueActionSetImpl;
 
 public class QueueActionSetTest {
-	private static QueueActionSet	queueActions;
-	private List<String>			actionsNames;
-	Log								log	= LogFactory.getLog(ChassisActionSetTest.class);
+	private static QueueActionSetImpl				queueActions;
+	private static List<QueueConstants.ActionId>	actionIds;
+	Log												log	= LogFactory.getLog(ChassisActionSetTest.class);
 
 	@BeforeClass
 	public static void testBasicActionSet() {
-		queueActions = new QueueActionSet();
+		queueActions = new QueueActionSetImpl();
+		actionIds = Arrays.asList(QueueConstants.ActionId.values());
 	}
 
 	@Test
-	public void getActionNamesTest() {
-		actionsNames = queueActions.getActionNames();
-		assert (actionsNames.size() != 0);
-		for (String names : actionsNames) {
-			log.info(names);
-		}
+	public void implContainsAllRequiredActionIdsTest() {
+		Assert.assertTrue(queueActions.getDefinition().getActionIds()
+				.containsAll(actionIds));
 	}
 
 	@Test
 	public void getActionSetIdTest() {
 		String actionSetId = queueActions.getActionSetId();
-		assert (actionSetId != null);
-		assert (actionSetId.equalsIgnoreCase("queueActionSet"));
+		Assert.assertNotNull(actionSetId);
+		Assert.assertTrue(actionSetId.equalsIgnoreCase("queueActionSet"));
 	}
 
 	@Test
-	public void getActionClassNameTest() {
-		actionsNames = queueActions.getActionNames();
-		for (String names : actionsNames) {
-			String action = queueActions.getAction(names).getName();
-			assert (action != null);
-			log.info(action);
+	public void implContainsAnActionForEachRequiredId() {
+		for (IActionId id : actionIds) {
+			Assert.assertNotNull(queueActions.getAction(id));
 		}
 	}
 
 	@Test
-	public void getActionTest() {
-		actionsNames = queueActions.getActionNames();
-		try {
-			for (String names : actionsNames) {
-				Action action = queueActions.obtainAction(names);
-				assert (action.getActionID() != null);
-				// assert (action.getActionID().equalsIgnoreCase(names));
-			}
-		} catch (ActionException e) {
-			log.error(e.getMessage());
-			Assert.fail(e.getLocalizedMessage());
+	public void getActionTest() throws ActionException {
+		for (IActionId id : actionIds) {
+			Action action = queueActions.obtainAction(id);
+			Assert.assertNotNull(action.getActionID());
+			Assert.assertEquals(id, action.getActionID());
 		}
 	}
-
 }

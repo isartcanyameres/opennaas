@@ -3,17 +3,15 @@ package org.opennaas.extensions.router.junos.actionssets.actions.gretunnel;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.Service;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * @author Jordi Puig
@@ -30,7 +28,6 @@ public class DeleteTunnelAction extends JunosAction {
 	 * 
 	 */
 	public DeleteTunnelAction() {
-		setActionID(ActionConstants.DELETETUNNEL);
 		setTemplate(VELOCITY_TEMPLATE);
 		this.protocolName = PROTOCOL_NAME;
 	}
@@ -50,7 +47,7 @@ public class DeleteTunnelAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 	}

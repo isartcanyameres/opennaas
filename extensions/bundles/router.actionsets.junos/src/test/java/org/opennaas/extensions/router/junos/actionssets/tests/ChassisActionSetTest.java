@@ -1,65 +1,56 @@
 package org.opennaas.extensions.router.junos.actionssets.tests;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.opennaas.extensions.router.junos.actionssets.ChassisActionSet;
-import org.opennaas.core.resources.action.Action;
-import org.opennaas.core.resources.action.ActionException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.IActionId;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
+import org.opennaas.extensions.router.junos.actionssets.ChassisActionSetImpl;
 
 public class ChassisActionSetTest {
-	private static ChassisActionSet	chassis;
-	private List<String>			actionsNames;
-	Log								log	= LogFactory.getLog(ChassisActionSetTest.class);
+	private static ChassisActionSetImpl				chassis;
+	private static List<ChassisActionSet.ActionId>	actionIds;
+	Log												log	= LogFactory.getLog(ChassisActionSetTest.class);
 
 	@BeforeClass
 	public static void testChassisActionSet() {
-		chassis = new ChassisActionSet();
+		chassis = new ChassisActionSetImpl();
+		actionIds = Arrays.asList(ChassisActionSet.ActionId.values());
 	}
 
 	@Test
-	public void getActionNamesTest() {
-		actionsNames = chassis.getActionNames();
-		assert (actionsNames.size() != 0);
-		for (String names : actionsNames) {
-			log.info(names);
-		}
+	public void implContainsAllRequiredActionIdsTest() {
+		Assert.assertTrue(chassis.getDefinition().getActionIds()
+				.containsAll(actionIds));
 	}
 
 	@Test
 	public void getActionSetIdTest() {
 		String actionSetId = chassis.getActionSetId();
-		assert (actionSetId != null);
-		assert (actionSetId.equalsIgnoreCase("chassisActionSet"));
+		Assert.assertNotNull(actionSetId);
+		Assert.assertTrue(actionSetId.equalsIgnoreCase("chassisActionSet"));
 	}
 
 	@Test
-	public void getActionClassNameTest() {
-		actionsNames = chassis.getActionNames();
-		for (String names : actionsNames) {
-			String action = chassis.getAction(names).getName();
-			assert (action != null);
-			log.info(action);
+	public void implContainsAnActionForEachRequiredId() {
+		for (IActionId id : actionIds) {
+			Assert.assertNotNull(chassis.getAction(id));
 		}
 	}
 
 	@Test
-	public void getActionTest() {
-		actionsNames = chassis.getActionNames();
-		try {
-			for (String names : actionsNames) {
-				Action action = chassis.obtainAction(names);
-				assert (action.getActionID() != null);
-				// assert (action.getActionID().equalsIgnoreCase(names));
-			}
-		} catch (ActionException e) {
-			log.error(e.getMessage());
-			Assert.fail(e.getLocalizedMessage());
+	public void getActionTest() throws ActionException {
+		for (IActionId id : actionIds) {
+			Action action = chassis.obtainAction(id);
+			Assert.assertNotNull(action.getActionID());
+			Assert.assertEquals(id, action.getActionID());
 		}
 	}
 

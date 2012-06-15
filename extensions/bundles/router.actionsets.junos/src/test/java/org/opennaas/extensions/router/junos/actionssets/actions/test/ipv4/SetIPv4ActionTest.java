@@ -1,17 +1,17 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.test.ipv4;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.extensions.router.capability.ip.IPActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class SetIPv4ActionTest {
 	Log								log	= LogFactory.getLog(GetConfigActionTest.class);
@@ -39,7 +39,7 @@ public class SetIPv4ActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.SETIPv4, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", IPActionSet.ActionId.SET_IPv4, action.getActionID());
 	}
 
 	@Test

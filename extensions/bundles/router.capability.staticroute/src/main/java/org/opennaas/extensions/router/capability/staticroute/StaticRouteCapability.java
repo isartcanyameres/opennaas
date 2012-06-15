@@ -84,7 +84,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 		aParams[1] = maskIpAdress;
 		aParams[2] = nextHopIpAddress;
 
-		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
+		IAction action = createActionAndCheckParams(StaticRouteActionSet.ActionId.STATIC_ROUTE_CREATE, aParams);
 		queueAction(action);
 		log.info("End of createStaticRoute call");
 	}

@@ -1,14 +1,13 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.queue;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.KeepAliveNetconfCommand;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.KeepAliveNetconfCommand;
 
 public class IsAliveAction extends JunosAction {
 
@@ -20,7 +19,7 @@ public class IsAliveAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.ISALIVE);
+		this.setActionID(QueueConstants.ActionId.ISALIVE);
 		this.protocolName = "netconf";
 
 	}
@@ -32,7 +31,7 @@ public class IsAliveAction extends JunosAction {
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 	}
 

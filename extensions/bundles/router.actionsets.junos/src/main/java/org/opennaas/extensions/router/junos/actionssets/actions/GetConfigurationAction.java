@@ -12,7 +12,6 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
 import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
@@ -37,7 +36,6 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.GETCONFIG);
 		// setTemplate("/VM_files/getInterfaceInformation.vm");
 		setTemplate("/VM_files/getconfiguration.vm");
 		// setTemplate("/VM_files/getInterfaces.vm");
@@ -52,7 +50,7 @@ public class GetConfigurationAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 

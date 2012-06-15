@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.action.IActionId;
 import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.mock.MockActionId;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 
@@ -13,7 +15,7 @@ public class Profile implements IProfile {
 	private String					profileName				= "TestProfile";
 	private String					resourceType			= "router";
 	private String[]				suitableCapabilities	= new String[] { "chassis" };
-	private String[]				overridenActionIds		= new String[] { "setInterface" };
+	private IActionId[]				overridenActionIds		= new MockActionId[] { MockActionId.MOCK_ACTION };
 
 	private Map<String, IActionSet>	actionSets				= new HashMap<String, IActionSet>();
 	private ProfileDescriptor		descriptor				= null;
@@ -56,12 +58,16 @@ public class Profile implements IProfile {
 		return descriptor;
 	}
 
-	private void fillProfile(String[] actionIds, String[] capabilityIds, String resourceType) {
+	private void fillProfile(IActionId[] actionIds, String[] capabilityIds, String resourceType) {
 
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = new ActionSet() {
+			public org.opennaas.core.resources.action.IActionSetDefinition getDefinition() {
+				return null;
+			};
+		};
 
 		actionSet.setActionSetId(getProfileName() + "ActionSet");
-		for (String actionId : actionIds) {
+		for (IActionId actionId : actionIds) {
 			actionSet.putAction(actionId, DummyAction.class);
 		}
 

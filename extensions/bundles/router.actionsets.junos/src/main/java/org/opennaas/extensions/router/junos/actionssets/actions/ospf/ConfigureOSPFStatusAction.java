@@ -3,7 +3,10 @@ package org.opennaas.extensions.router.junos.actionssets.actions.ospf;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
@@ -11,11 +14,6 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.OSPFService;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * This action is responsible of configuring enable/disable OSPF status in a Junos 10 router.
@@ -35,7 +33,6 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 	 * Initialize protocolName, ActionId and velocity template
 	 */
 	protected void initialize() {
-		this.setActionID(ActionConstants.OSPF_ACTIVATE + "/" + ActionConstants.OSPF_DEACTIVATE);
 		setTemplate("/VM_files/ospfConfigureStatus.vm");
 		this.protocolName = "netconf";
 	}
@@ -55,7 +52,7 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 	}

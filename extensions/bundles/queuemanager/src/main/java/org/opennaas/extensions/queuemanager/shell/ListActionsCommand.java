@@ -59,7 +59,7 @@ public class ListActionsCommand extends GenericKarafCommand {
 			String[][] matrix = new String[listActions.size()][2];
 			int num = 0;
 			for (IAction action : listActions) {
-				String actionID = action.getActionID();
+				String actionID = action.getActionID().toString();
 				String params[] = { Integer.toString(num), actionID };
 				matrix[num] = params;
 				num++;

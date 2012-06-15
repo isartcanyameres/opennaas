@@ -6,6 +6,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockActionFactory;
+import org.opennaas.core.resources.mock.MockActionId;
 import org.opennaas.core.resources.queue.ModifyParams;
 
 public class QueueOperationsTest {
@@ -17,15 +18,15 @@ public class QueueOperationsTest {
 
 		MockActionFactory actionFactory = new MockActionFactory();
 
-		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock1"));
-		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock2"));
-		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock3"));
+		queueManager.queueAction(MockActionFactory.newMockActionOK(MockActionId.MOCK_ACTION_1));
+		queueManager.queueAction(MockActionFactory.newMockActionOK(MockActionId.MOCK_ACTION_2));
+		queueManager.queueAction(MockActionFactory.newMockActionOK(MockActionId.MOCK_ACTION_3));
 		Assert.assertTrue(queueManager.getActions().size() == 3);
 
 		ModifyParams modifyParams = ModifyParams.newRemoveOperation(1);
 		queueManager.modify(modifyParams);
 		Assert.assertTrue(queueManager.getActions().size() == 2);
-		Assert.assertTrue(queueManager.getActions().get(0).getActionID().equals("actionMock1"));
-		Assert.assertTrue(queueManager.getActions().get(1).getActionID().equals("actionMock3"));
+		Assert.assertTrue(queueManager.getActions().get(0).getActionID().equals(MockActionId.MOCK_ACTION_1));
+		Assert.assertTrue(queueManager.getActions().get(1).getActionID().equals(MockActionId.MOCK_ACTION_3));
 	}
 }

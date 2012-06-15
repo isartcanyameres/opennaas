@@ -3,10 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.staticrout
 import java.io.IOException;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +11,10 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class CreateStaticRouteActionTest {
 	Log										log	= LogFactory.getLog(CreateStaticRouteActionTest.class);
@@ -34,7 +34,7 @@ public class CreateStaticRouteActionTest {
 
 	@Test
 	public void actionIDTest() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.STATIC_ROUTE_CREATE,
+		Assert.assertEquals("Wrong ActionID", StaticRouteActionSet.ActionId.STATIC_ROUTE_CREATE,
 				action.getActionID());
 	}
 
@@ -62,7 +62,7 @@ public class CreateStaticRouteActionTest {
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.STATIC_ROUTE_CREATE));
+					.equals(StaticRouteActionSet.ActionId.STATIC_ROUTE_CREATE));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail();

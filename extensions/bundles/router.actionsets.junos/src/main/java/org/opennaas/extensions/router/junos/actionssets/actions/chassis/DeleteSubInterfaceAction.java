@@ -8,7 +8,6 @@ import java.util.Map;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -22,7 +21,6 @@ public class DeleteSubInterfaceAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.DELETESUBINTERFACE);
 		setTemplate("/VM_files/deletesubinterface.vm");
 		this.protocolName = "netconf";
 	}

@@ -3,18 +3,16 @@ package org.opennaas.extensions.router.junos.actionssets.actions.ospf;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.router.model.OSPFArea;
-
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -29,7 +27,6 @@ public class AddOSPFInterfaceInAreaAction extends JunosAction {
 	 * 
 	 */
 	public AddOSPFInterfaceInAreaAction() {
-		setActionID(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA);
 		setTemplate(VELOCITY_TEMPLATE);
 		this.protocolName = PROTOCOL_NAME;
 	}
@@ -50,7 +47,7 @@ public class AddOSPFInterfaceInAreaAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 	}

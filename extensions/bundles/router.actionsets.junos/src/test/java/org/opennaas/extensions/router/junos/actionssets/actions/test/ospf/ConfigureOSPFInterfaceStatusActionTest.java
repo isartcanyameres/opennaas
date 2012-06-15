@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOSPFInterfaceStatusAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
-import org.opennaas.extensions.router.model.OSPFService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +13,16 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOSPFInterfaceStatusAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class ConfigureOSPFInterfaceStatusActionTest {
 	Log													log	= LogFactory.getLog(ConfigureOSPFInterfaceStatusActionTest.class);
@@ -44,7 +44,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	@Test
 	public void actionIDTest() {
 
-		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE,
+		Assert.assertEquals("Wrong ActionID", OSPFActionSet.ActionId.OSPF_ENABLE_INTERFACE + "/" + OSPFActionSet.ActionId.OSPF_DISABLE_INTERFACE,
 				action.getActionID());
 	}
 
@@ -77,7 +77,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE));
+					.equals(OSPFActionSet.ActionId.OSPF_ENABLE_INTERFACE + "/" + OSPFActionSet.ActionId.OSPF_DISABLE_INTERFACE));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());

@@ -3,13 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.ospf;
 import java.io.IOException;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ospf.AddOSPFInterfaceInAreaAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +11,13 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.ospf.AddOSPFInterfaceInAreaAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 
 public class AddOSPFInterfaceInAreaActionTest {
 	Log											log	= LogFactory.getLog(AddOSPFInterfaceInAreaActionTest.class);
@@ -39,7 +39,7 @@ public class AddOSPFInterfaceInAreaActionTest {
 	@Test
 	public void actionIDTest() {
 
-		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_ADD_INTERFACE_IN_AREA,
+		Assert.assertEquals("Wrong ActionID", OSPFActionSet.ActionId.OSPF_ADD_INTERFACE_IN_AREA,
 				action.getActionID());
 	}
 
@@ -72,7 +72,7 @@ public class AddOSPFInterfaceInAreaActionTest {
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA));
+					.equals(OSPFActionSet.ActionId.OSPF_ADD_INTERFACE_IN_AREA));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail();

@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.DeleteSubInterfaceAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
@@ -38,7 +38,7 @@ public class DeleteSubInterfaceActionTest {
 	}
 
 	@Test
-	public void testExecuteAction() {
+	public void testExecuteAction() throws ActionException {
 		// delete new interface
 		// get configuration to check it is deleted
 		action = new DeleteSubInterfaceAction();
@@ -49,15 +49,10 @@ public class DeleteSubInterfaceActionTest {
 		eth.setPortNumber(13);
 
 		action.setParams(eth);
-		try {
-			ActionResponse response = action.execute(protocolsessionmanager);
-			Assert.assertTrue(response.getActionID().equals(ActionConstants.DELETESUBINTERFACE));
 
-		} catch (ActionException e) {
+		ActionResponse response = action.execute(protocolsessionmanager);
+		Assert.assertTrue(response.getActionID().equals(ChassisActionSet.ActionId.DELETESUBINTERFACE));
 
-			e.printStackTrace();
-			Assert.fail();
-		}
 		org.opennaas.extensions.router.model.System routerModel = (org.opennaas.extensions.router.model.System) action.getModelToUpdate();
 		Assert.assertNotNull(routerModel);
 

@@ -2,12 +2,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters;
 
 import java.io.ByteArrayInputStream;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
-import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
-import org.opennaas.extensions.router.model.ComputerSystem;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -17,6 +11,11 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
+import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class ListLogicalRoutersAction extends JunosAction {
 	Log	logger	= LogFactory.getLog(ListLogicalRoutersAction.class);
@@ -28,7 +27,6 @@ public class ListLogicalRoutersAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.GETLOGICALROUTERS);
 		setTemplate("/VM_files/getLogicalRouters.vm");
 		this.protocolName = "netconf";
 	}
@@ -41,7 +39,7 @@ public class ListLogicalRoutersAction extends JunosAction {
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID.toString(), e);
 		}
 		validateAction(actionResponse);
 

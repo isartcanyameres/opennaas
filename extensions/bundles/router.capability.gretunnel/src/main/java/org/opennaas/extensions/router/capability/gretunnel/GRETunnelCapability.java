@@ -47,7 +47,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 	@Override
 	public void createGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
 		log.info("Start of createGRETunnel call");
-		IAction action = createActionAndCheckParams(GRETunnelActionSet.CREATETUNNEL, greTunnelService);
+		IAction action = createActionAndCheckParams(GRETunnelActionSet.ActionId.CREATETUNNEL, greTunnelService);
 		queueAction(action);
 		log.info("End of createGRETunnel call");
 	}
@@ -61,7 +61,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 	@Override
 	public void deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
 		log.info("Start of deleteGRETunnel call");
-		IAction action = createActionAndCheckParams(GRETunnelActionSet.DELETETUNNEL, greTunnelService);
+		IAction action = createActionAndCheckParams(GRETunnelActionSet.ActionId.DELETETUNNEL, greTunnelService);
 		queueAction(action);
 		log.info("End of deleteGRETunnel call");
 	}
@@ -87,7 +87,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 			}
 		}
 		log.info("End of showGRETunnelConfiguration call");
-		
+
 		return listGreTunnelServices;
 	}
 

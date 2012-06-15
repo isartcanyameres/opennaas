@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!--  	publish action set services  -->
-	<bean id="chassisActionSet" class="org.opennaas.extensions.router.junos.actionssets.ChassisActionSet"/>
+	<bean id="chassisActionSet" class="org.opennaas.extensions.router.junos.actionssets.ChassisActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="chassisActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
@@ -12,7 +12,7 @@
 		</service-properties>
 	</service>
 	<!--  	publish action set services  -->
-	<bean id="ipActionSet" class="org.opennaas.extensions.router.junos.actionssets.IPActionSet"/>
+	<bean id="ipActionSet" class="org.opennaas.extensions.router.junos.actionssets.IPActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="ipActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
@@ -23,7 +23,7 @@
 		</service-properties>
 	</service>
 	<!--  	publish action set services  -->
-	<bean id="queueActionSet" class="org.opennaas.extensions.router.junos.actionssets.QueueActionSet"/>
+	<bean id="queueActionSet" class="org.opennaas.extensions.router.junos.actionssets.QueueActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="queueActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
@@ -35,7 +35,7 @@
 	</service>
 	<!--  	publish action set services  -->
 
-	<bean id="gretunnelActionSet" class="org.opennaas.extensions.router.junos.actionssets.GRETunnelActionSet"/>
+	<bean id="gretunnelActionSet" class="org.opennaas.extensions.router.junos.actionssets.GRETunnelActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="gretunnelActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
@@ -45,7 +45,7 @@
 			<entry key="actionset.version" value="10.10"/>	
 		</service-properties>
 	</service>
-	<bean id="ospfActionSet" class="org.opennaas.extensions.router.junos.actionssets.OSPFActionSet"/>
+	<bean id="ospfActionSet" class="org.opennaas.extensions.router.junos.actionssets.OSPFActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="ospfActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
@@ -55,7 +55,7 @@
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
-	<bean id="staticRouteActionSet" class="org.opennaas.extensions.router.junos.actionssets.StaticRouteActionSet"/>
+	<bean id="staticRouteActionSet" class="org.opennaas.extensions.router.junos.actionssets.StaticRouteActionSetImpl"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="staticRouteActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>

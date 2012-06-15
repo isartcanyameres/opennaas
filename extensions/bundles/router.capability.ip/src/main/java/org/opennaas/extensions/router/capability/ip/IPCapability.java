@@ -50,7 +50,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		ip.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
 		param.addProtocolEndpoint(ipProtocolEndpoint);
 
-		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, param);
+		IAction action = createActionAndCheckParams(IPActionSet.ActionId.SET_IPv4, param);
 		queueAction(action);
 		log.info("End of setIPv4 call");
 	}
@@ -63,7 +63,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException {
 		log.info("Start of setInterfaceDescription call");
-		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
+		IAction action = createActionAndCheckParams(IPActionSet.ActionId.SET_INTERFACE_DESCRIPTION, iface);
 		queueAction(action);
 		log.info("End of setInterfaceDescription call");
 	}

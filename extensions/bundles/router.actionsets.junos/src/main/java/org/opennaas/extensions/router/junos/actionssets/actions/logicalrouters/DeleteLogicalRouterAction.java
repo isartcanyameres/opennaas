@@ -3,7 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -15,7 +14,6 @@ public class DeleteLogicalRouterAction extends JunosAction {
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.DELETELOGICALROUTER);
 		setTemplate("/VM_files/deleteLogicalRouter.vm");
 		this.protocolName = "netconf";
 	}
