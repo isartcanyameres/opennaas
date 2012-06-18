@@ -1,10 +1,11 @@
 package org.opennaas.core.queue;
 
+import java.util.concurrent.Semaphore;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.core.queue.transaction.ITransaction;
-import org.opennaas.core.queue.transaction.TransactionId;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.mock.MockAction;
 
@@ -13,11 +14,10 @@ public class QueueTest {
 	@Test
 	public void submitQStoresQueueExecution() throws SubmitionException {
 		IExtendedQueueCapability qCap = getQueueCapability();
-		QueueId qId = qCap.createQueue();
 		IAction actionA = new MockAction();
-		qCap.add(qId, actionA);
+		qCap.add(actionA);
 
-		TransactionId execId = qCap.submit(qId);
+		ExecutionId execId = qCap.submit();
 		IQueueExecutionRepository qExecRepo = getQueueExecutionRepository();
 		ITransaction qExec = qExecRepo.get(execId);
 		Assert.assertNotNull(qExec);
@@ -27,42 +27,17 @@ public class QueueTest {
 	public void executionContainsAllActionsInQ() throws SubmitionException {
 
 		IExtendedQueueCapability qCap = getQueueCapability();
-		QueueId qId = qCap.createQueue();
 		IAction actionA = new MockAction();
 		IAction actionB = new MockAction();
 		IAction actionC = new MockAction();
 
-		qCap.add(qId, actionA);
-		qCap.add(qId, actionB);
-		qCap.add(qId, actionC);
+		qCap.add(actionA);
+		qCap.add(actionB);
+		qCap.add(actionC);
 
-		TransactionId execId = qCap.submit(qId);
+		ExecutionId execId = qCap.submit();
 		IQueueExecutionRepository qExecRepo = getQueueExecutionRepository();
-		ITransaction qExec = qExecRepo.get(execId);
-
-		Assert.assertEquals(3, qExec.getTransactionOperations().size());
-		Assert.assertTrue(qExec.getTransactionOperations().containsAll(qCap.listActions(qId)));
-	}
-
-	@Test
-	public void executionContainsAllActionsInQAfterDestroyQ() throws SubmitionException {
-
-		IExtendedQueueCapability qCap = getQueueCapability();
-		QueueId qId = qCap.createQueue();
-		IAction actionA = new MockAction();
-		IAction actionB = new MockAction();
-		IAction actionC = new MockAction();
-
-		qCap.add(qId, actionA);
-		qCap.add(qId, actionB);
-		qCap.add(qId, actionC);
-
-		TransactionId execId = qCap.submit(qId);
-
-		qCap.destroyQueue(qId);
-
-		IQueueExecutionRepository qExecRepo = getQueueExecutionRepository();
-		ITransaction qExec = qExecRepo.get(execId);
+		IQueueExecution qExec = qExecRepo.get(execId);
 
 		Assert.assertEquals(3, qExec.getTransactionOperations().size());
 		Assert.assertTrue(qExec.getTransactionOperations().contains(actionA));
@@ -71,24 +46,26 @@ public class QueueTest {
 	}
 
 	@Test
-	public void submmitQIsProtectedWithMutex() throws SubmitionException {
+	public void submmitQIsProtectedWithMutex() throws SubmitionException, InterruptedException {
 
 		IExtendedQueueCapability qCap = getQueueCapability();
 
-		QueueId qId1 = qCap.createQueue();
-		QueueId qId2 = qCap.createQueue();
-
 		WaitingAction waitingAction = new WaitingAction();
-		qCap.add(qId1, waitingAction);
-		TransactionId txId1 = qCap.submit(qId1);
+
+		Semaphore semaphore = new Semaphore(1);
+		semaphore.acquire();
+		Thread t = new SubmitterThread(qCap, semaphore, waitingAction);
+		t.start();
+
+		semaphore.acquire();
 
 		int eExecRepoSize = getQueueExecutionRepository().listIds().size();
 
-		qCap.add(qId2, new MockAction());
+		qCap.add(new MockAction());
 
 		Exception e = null;
 		try {
-			qCap.submit(qId2);
+			qCap.submit();
 		} catch (SubmitionException e1) {
 			e = e1;
 		}
@@ -97,6 +74,8 @@ public class QueueTest {
 
 		waitingAction.stopWaiting();
 	}
+
+	// TODO TEST queue lock/unlock works
 
 	// TODO TEST user can access up-to-date Tx status from QExecutionRepository
 	// TODO TEST an execution remains in QExecutionRepository after finishing
@@ -109,6 +88,29 @@ public class QueueTest {
 	private IExtendedQueueCapability getQueueCapability() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private class SubmitterThread extends Thread {
+
+		Semaphore					semaphore;
+		IExtendedQueueCapability	qCap;
+		IAction						action;
+
+		public SubmitterThread(IExtendedQueueCapability qCap, Semaphore semaphore, IAction action) {
+			this.qCap = qCap;
+			this.semaphore = semaphore;
+			this.action = action;
+		}
+
+		public void run() {
+
+			qCap.add(action);
+			semaphore.release();
+			try {
+				ExecutionId txId1 = qCap.submit();
+			} catch (SubmitionException e) {
+			}
+		}
 	}
 
 }

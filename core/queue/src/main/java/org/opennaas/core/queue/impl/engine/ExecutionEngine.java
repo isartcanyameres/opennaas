@@ -1,5 +1,6 @@
 package org.opennaas.core.queue.impl.engine;
 
+import org.opennaas.core.queue.ExecutionId;
 import org.opennaas.core.queue.engine.EngineLockedException;
 import org.opennaas.core.queue.engine.ICompositeExecutionEngine;
 import org.opennaas.core.queue.engine.IExecutionEngine;
@@ -15,9 +16,9 @@ public class ExecutionEngine implements IExecutionEngine, ICompositeExecutionEng
 	}
 
 	@Override
-	public void submit(ITransaction tx) throws EngineLockedException {
+	public ExecutionId submit(ITransaction tx) throws EngineLockedException {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 }

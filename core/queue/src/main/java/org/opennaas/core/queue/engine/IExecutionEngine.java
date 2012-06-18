@@ -1,5 +1,6 @@
 package org.opennaas.core.queue.engine;
 
+import org.opennaas.core.queue.ExecutionId;
 import org.opennaas.core.queue.transaction.ITransaction;
 
 public interface IExecutionEngine {
@@ -13,6 +14,6 @@ public interface IExecutionEngine {
 	 * @throws EngineLockedException
 	 *             if this engine is already locked.
 	 */
-	public void submit(ITransaction tx) throws EngineLockedException;
+	public ExecutionId submit(ITransaction tx) throws EngineLockedException;
 
 }

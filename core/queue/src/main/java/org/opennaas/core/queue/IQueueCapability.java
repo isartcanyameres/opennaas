@@ -2,20 +2,19 @@ package org.opennaas.core.queue;
 
 import java.util.List;
 
-import org.opennaas.core.queue.transaction.TransactionId;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.ICapability;
 
 public interface IQueueCapability extends ICapability {
 
-	public QueueId createQueue();
+	public ExecutionId submit() throws SubmitionException;
 
-	public TransactionId submit(QueueId qid) throws SubmitionException;
+	public List<IAction> listActions();
 
-	public void destroyQueue(QueueId qid);
+	public IAction removeAction(IAction action);
 
-	public List<IAction> listActions(QueueId qid);
+	public void lock() throws AlreadyLockedException;
 
-	public IAction removeAction(QueueId qid, IAction action);
+	public void unlock() throws NotLockedException;
 
 }

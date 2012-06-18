@@ -2,15 +2,12 @@ package org.opennaas.core.queue;
 
 import java.util.List;
 
-import org.opennaas.core.queue.transaction.ITransaction;
-import org.opennaas.core.queue.transaction.TransactionId;
-
 public interface IQueueExecutionRepository {
 
-	public ITransaction get(TransactionId qExecId);
+	public IQueueExecution get(ExecutionId qExecId);
 
-	public void save(ITransaction qExec);
+	public void save(IQueueExecution qExec);
 
-	public List<TransactionId> listIds();
+	public List<ExecutionId> listIds();
 
 }

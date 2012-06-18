@@ -12,6 +12,8 @@ public interface ICompositeExecutionEngine {
 	 * 
 	 * Executing this method locks the engine.
 	 * 
+	 * This method is not blocking. It creates Wrapper and returns immediately.
+	 * 
 	 * @param tx
 	 * @throws EngineLockedException
 	 *             if this engine is already locked.
