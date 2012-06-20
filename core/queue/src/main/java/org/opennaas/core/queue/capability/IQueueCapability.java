@@ -12,7 +12,7 @@ public interface IQueueCapability extends ICapability {
 
 	public List<IAction> getActions();
 
-	public IAction removeAction(IAction action) throws IllegalStateException;
+	public IAction removeAction(IAction action) throws IllegalStateException, Exception;
 
 	public void clear() throws IllegalStateException;
 
