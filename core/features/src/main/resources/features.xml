@@ -138,6 +138,12 @@
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-queue" version="${project.version}">
+
+		<bundle>mvn:org.opennaas/org.opennaas.core.queue/${project.version}</bundle>
+	</feature>
+	
 
 	<feature name="opennaas-luminis" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
@@ -159,6 +165,7 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">opennaas-queue</feature>		
 	</feature>
 
    <feature name="itests-helpers" version="${project.version}">	  	

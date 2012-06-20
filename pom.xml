@@ -114,6 +114,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.core.queue</artifactId>
+				<version>${project.version}</version>				
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
 				<version>${project.version}</version>
 			</dependency>
