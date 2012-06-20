@@ -1,4 +1,4 @@
-package org.opennaas.core.queue;
+package org.opennaas.core.queue.capability;
 
 import org.opennaas.core.resources.action.IAction;
 

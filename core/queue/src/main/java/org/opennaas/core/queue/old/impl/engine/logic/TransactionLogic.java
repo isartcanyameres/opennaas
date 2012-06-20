@@ -1,12 +1,13 @@
-package org.opennaas.core.queue.impl.engine.logic;
+package org.opennaas.core.queue.old.impl.engine.logic;
 
 import java.util.concurrent.Callable;
 
 import org.opennaas.core.queue.impl.transaction.TransactionCoordinator;
 import org.opennaas.core.queue.transaction.ITransactionCoordinator;
 import org.opennaas.core.queue.transaction.ITransactionWrapper;
+import org.opennaas.core.queue.transaction.ITransactionWrapper.TxResult;
 
-public class TransactionLogic implements Callable {
+public class TransactionLogic implements Callable<TxResult> {
 
 	private ITransactionWrapper	tx;
 
@@ -15,7 +16,7 @@ public class TransactionLogic implements Callable {
 	}
 
 	@Override
-	public Object call() throws Exception {
+	public TxResult call() throws Exception {
 		ITransactionCoordinator coordinator = new TransactionCoordinator();
 		coordinator.register(tx);
 		tx.begin();

@@ -1,7 +1,9 @@
-package org.opennaas.core.queue.engine;
+package org.opennaas.core.queue.old;
 
-import org.opennaas.core.queue.transaction.ITransaction;
+import java.util.concurrent.Future;
+
 import org.opennaas.core.queue.transaction.ITransactionWrapper;
+import org.opennaas.core.queue.transaction.ITransactionWrapper.TxResult;
 
 public interface ICompositeExecutionEngine {
 
@@ -15,9 +17,13 @@ public interface ICompositeExecutionEngine {
 	 * This method is not blocking. It creates Wrapper and returns immediately.
 	 * 
 	 * @param tx
-	 * @throws EngineLockedException
-	 *             if this engine is already locked.
 	 */
-	public ITransactionWrapper submitCoordinated(ITransaction tx) throws EngineLockedException;
+	public Future<TxResult> submitCoordinated(ITransactionWrapper tx);
+
+	public Future<TxResult> begin();
+
+	public Future<TxResult> commit();
+
+	public Future<TxResult> abort();
 
 }

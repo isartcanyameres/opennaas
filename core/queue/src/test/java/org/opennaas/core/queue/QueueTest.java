@@ -5,6 +5,10 @@ import java.util.concurrent.Semaphore;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.queue.capability.IExtendedQueueCapability;
+import org.opennaas.core.queue.repository.ExecutionId;
+import org.opennaas.core.queue.repository.IQueueExecution;
+import org.opennaas.core.queue.repository.IQueueExecutionRepository;
 import org.opennaas.core.queue.transaction.ITransaction;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.mock.MockAction;
@@ -39,10 +43,10 @@ public class QueueTest {
 		IQueueExecutionRepository qExecRepo = getQueueExecutionRepository();
 		IQueueExecution qExec = qExecRepo.get(execId);
 
-		Assert.assertEquals(3, qExec.getTransactionOperations().size());
-		Assert.assertTrue(qExec.getTransactionOperations().contains(actionA));
-		Assert.assertTrue(qExec.getTransactionOperations().contains(actionB));
-		Assert.assertTrue(qExec.getTransactionOperations().contains(actionC));
+		Assert.assertEquals(3, qExec.getActions().size());
+		Assert.assertTrue(qExec.getActions().contains(actionA));
+		Assert.assertTrue(qExec.getActions().contains(actionB));
+		Assert.assertTrue(qExec.getActions().contains(actionC));
 	}
 
 	@Test

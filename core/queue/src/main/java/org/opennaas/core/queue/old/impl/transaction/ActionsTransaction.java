@@ -1,4 +1,4 @@
-package org.opennaas.core.queue.impl.transaction;
+package org.opennaas.core.queue.old.impl.transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import org.opennaas.core.queue.transaction.ITransaction;
 import org.opennaas.core.queue.transaction.ITransactionContext;
 import org.opennaas.core.queue.transaction.ITransactionWrapper;
-import org.opennaas.core.queue.transaction.TransactionId;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -22,6 +21,7 @@ public class ActionsTransaction implements ITransactionWrapper, ITransaction {
 
 	private ITransactionContext		ctx;
 	private TxResult				result;
+	private TxResult				beginResult;
 	private TxStatus				status;
 	private IActionSet				qActionSet;
 
@@ -35,11 +35,11 @@ public class ActionsTransaction implements ITransactionWrapper, ITransaction {
 	@Override
 	public void begin() {
 		status = TxStatus.BEGGINNING;
-		result = runPrepare();
+		TxResult prepareResult = runPrepare();
 		// TODO check prepare result and abort if error
 		List<ActionResponse> executionResults = runTransactionOperations(); // Actions
 		// TODO check executionResults and abort if error
-		result = runValidate();
+		beginResult = runValidate();
 		status = TxStatus.BEGIN_FINISHED;
 	}
 
@@ -142,13 +142,6 @@ public class ActionsTransaction implements ITransactionWrapper, ITransaction {
 		return null;
 	}
 
-	@Override
-	public TransactionId getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ITransactionContext getContext() {
 		return ctx;
 	}

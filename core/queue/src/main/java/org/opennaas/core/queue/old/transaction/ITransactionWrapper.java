@@ -1,4 +1,4 @@
-package org.opennaas.core.queue.transaction;
+package org.opennaas.core.queue.old.transaction;
 
 public interface ITransactionWrapper {
 

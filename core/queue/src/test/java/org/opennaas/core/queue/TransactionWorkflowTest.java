@@ -5,12 +5,12 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.queue.engine.EngineLockedException;
-import org.opennaas.core.queue.engine.ICompositeExecutionEngine;
-import org.opennaas.core.queue.engine.IExecutionEngine;
 import org.opennaas.core.queue.impl.engine.ExecutionEngine;
 import org.opennaas.core.queue.impl.transaction.ActionsTransaction;
 import org.opennaas.core.queue.impl.transaction.TransactionCoordinator;
+import org.opennaas.core.queue.old.EngineLockedException;
+import org.opennaas.core.queue.old.ICompositeExecutionEngine;
+import org.opennaas.core.queue.old.IExecutionEngine;
 import org.opennaas.core.queue.transaction.ITransaction;
 import org.opennaas.core.queue.transaction.ITransactionCoordinator;
 import org.opennaas.core.queue.transaction.ITransactionWrapper;
@@ -46,8 +46,8 @@ public class TransactionWorkflowTest {
 	@Test
 	public void okTxStateTransitions() throws EngineLockedException {
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		engine.submit(tx);
@@ -67,8 +67,8 @@ public class TransactionWorkflowTest {
 
 	@Test
 	public void okTxStateTransitionsWithCoord() throws EngineLockedException {
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		ITransactionCoordinator txCoordinator = new TransactionCoordinator();
@@ -98,8 +98,8 @@ public class TransactionWorkflowTest {
 		// beginResult is only available in status after BEGIN_FINISHED included
 		// result is only available in status FINISHED
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		ITransactionCoordinator txCoordinator = new TransactionCoordinator();
@@ -136,8 +136,8 @@ public class TransactionWorkflowTest {
 	@Test
 	public void txSuccessIfAllIsOk() throws EngineLockedException {
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		engine.submit(tx);
@@ -152,8 +152,8 @@ public class TransactionWorkflowTest {
 	public void errorInPrepareCausesTxAbort() throws EngineLockedException {
 		qActionSet.putAction(QueueConstants.PREPARE, MockActionError.class);
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		engine.submit(tx);
@@ -164,7 +164,7 @@ public class TransactionWorkflowTest {
 
 		qActionSet.putAction(QueueConstants.PREPARE, MockActionExceptionOnExecute.class);
 		tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		engine.submit(tx);
@@ -177,8 +177,8 @@ public class TransactionWorkflowTest {
 	@Test
 	public void errorInExecuteActionsCausesTxAbort() throws EngineLockedException {
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionError());
 
 		engine.submit(tx);
@@ -202,8 +202,8 @@ public class TransactionWorkflowTest {
 	public void errorInValidateCausesTxAbort() throws EngineLockedException {
 		qActionSet.putAction(QueueConstants.VALIDATE, MockActionError.class);
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		engine.submit(tx);
@@ -228,8 +228,8 @@ public class TransactionWorkflowTest {
 	@Test
 	public void txAbortsWhenCoordinatorOrders() throws EngineLockedException {
 
-		ITransaction tx = new ActionsTransaction();
-		((ActionsTransaction) tx).setqActionSet(qActionSet);
+		ActionsTransaction tx = new ActionsTransaction();
+		tx.setqActionSet(qActionSet);
 		tx.getTransactionOperations().add(new MockActionOk());
 
 		ITransactionCoordinator txCoordinator = new TransactionCoordinator();

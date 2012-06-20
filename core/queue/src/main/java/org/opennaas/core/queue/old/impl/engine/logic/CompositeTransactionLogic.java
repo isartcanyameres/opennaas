@@ -1,10 +1,11 @@
-package org.opennaas.core.queue.impl.engine.logic;
+package org.opennaas.core.queue.old.impl.engine.logic;
 
 import java.util.concurrent.Callable;
 
 import org.opennaas.core.queue.impl.transaction.TransactionCoordinator;
 import org.opennaas.core.queue.transaction.ITransactionCoordinator;
 import org.opennaas.core.queue.transaction.ITransactionWrapper;
+import org.opennaas.core.queue.transaction.ITransactionWrapper.TxResult;
 
 /**
  * Differentiated from TransactionLogic because this does nor decide when to call next step, that decision is left to the caller of
@@ -13,7 +14,7 @@ import org.opennaas.core.queue.transaction.ITransactionWrapper;
  * @author isart
  * 
  */
-public class CompositeTransactionLogic implements Callable, ITransactionWrapper {
+public class CompositeTransactionLogic implements Callable<TxResult>, ITransactionWrapper {
 
 	private ITransactionWrapper	tx;
 
@@ -28,7 +29,7 @@ public class CompositeTransactionLogic implements Callable, ITransactionWrapper 
 	}
 
 	@Override
-	public Object call() throws Exception {
+	public TxResult call() throws Exception {
 		ITransactionCoordinator coordinator = new TransactionCoordinator();
 		coordinator.register(tx);
 
