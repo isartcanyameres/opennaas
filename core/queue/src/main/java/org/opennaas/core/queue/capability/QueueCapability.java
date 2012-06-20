@@ -70,6 +70,8 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	@Override
 	public void clear() throws IllegalStateException {
 
+		if (!this.queueState.equals(QueueState.FILLED))
+			throw new IllegalStateException("Can't clear the queue in the current state.");
 		while (!queue.isEmpty())
 			queue.remove(0);
 	}
@@ -128,11 +130,13 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 
 	@Override
 	public void queueAction(IAction newAction) throws CapabilityException {
+
 		log.info("Start of queueAction call");
 		log.debug("Queue new action");
 		// check params?
 		queue.add(newAction);
 		log.info("End of queueAction call");
+
 	}
 
 	@Override
