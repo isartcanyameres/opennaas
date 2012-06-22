@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.queue.Activator;
 import org.opennaas.core.queue.QueueState;
 import org.opennaas.core.queue.engine.EngineState;
+import org.opennaas.core.queue.impl.engine.QueueExecutionEngine;
 import org.opennaas.core.queue.repository.ExecutionId;
 import org.opennaas.core.queue.repository.ExecutionResult;
 import org.opennaas.core.resources.ActivatorException;
@@ -22,9 +23,9 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 
 	public static final String			CAPABILITY_TYPE	= "newqueue";
 	private String						resourceId		= "";
+	private ExecutionId					executionID		= null;
 	private final ArrayList<IAction>	queue			= new ArrayList<IAction>();
 	private QueueExecutionEngine		qExecEngine		= new QueueExecutionEngine();
-	private ExecutionId					executionID		= null;
 	private final Log					log				= LogFactory.getLog(QueueCapability.class);
 
 	public QueueCapability(CapabilityDescriptor descriptor) {
@@ -110,7 +111,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	public ExecutionResult blockingBegin() throws IllegalStateException {
 		if (!getQueueState().equals(QueueState.FILLED))
 			throw new IllegalStateException("Can't begin queue execution at the current state.");
-		executionID = qExecEngine.submit();
+		executionID = qExecEngine.submit(queue);
 		ExecutionResult execResult = qExecEngine.blockingBegin();
 		return execResult;
 
@@ -120,7 +121,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	public ExecutionResult blockingCommit() throws IllegalStateException {
 		if (!getQueueState().equals(QueueState.EXECUTING))
 			throw new IllegalStateException("Can't commit queue execution at the current state.");
-		executionID = qExecEngine.submit();
+		executionID = qExecEngine.submit(queue);
 		ExecutionResult execResult = qExecEngine.blockingBegin();
 		return execResult;
 	}
@@ -129,7 +130,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	public ExecutionResult blockingAbort() throws IllegalStateException {
 		if (!getQueueState().equals(QueueState.EXECUTING))
 			throw new IllegalStateException("Can't commit queue execution at the current state.");
-		executionID = qExecEngine.submit();
+		executionID = qExecEngine.submit(queue);
 		ExecutionResult execResult = qExecEngine.blockingAbort();
 		return execResult;
 
@@ -173,5 +174,18 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		}
 		else
 			return QueueState.EXECUTING;
+	}
+
+	@Override
+	public ExecutionResult execute() {
+		ExecutionResult execResult = new ExecutionResult();
+		try {
+			execResult = blockingBegin();
+			execResult = blockingCommit();
+			execResult = blockingAbort();
+		} catch (Exception e) {
+			return execResult;
+		}
+		return execResult;
 	}
 }

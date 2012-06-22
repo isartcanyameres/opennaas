@@ -30,4 +30,6 @@ public interface IQueueCapability extends ICapability {
 
 	public QueueState getQueueState() throws IllegalStateException;
 
+	public ExecutionResult execute();
+
 }
