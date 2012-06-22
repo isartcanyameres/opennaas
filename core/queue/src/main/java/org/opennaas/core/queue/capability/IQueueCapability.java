@@ -28,6 +28,6 @@ public interface IQueueCapability extends ICapability {
 
 	public ExecutionResult blockingAbort() throws IllegalStateException;
 
-	public QueueState getQueueState();
+	public QueueState getQueueState() throws IllegalStateException;
 
 }
