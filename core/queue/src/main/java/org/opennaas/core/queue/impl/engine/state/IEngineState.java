@@ -1,18 +1,13 @@
-package org.opennaas.core.queue.engine;
+package org.opennaas.core.queue.impl.engine.state;
 
 import java.util.List;
 
+import org.opennaas.core.queue.engine.EngineState;
 import org.opennaas.core.queue.repository.ExecutionId;
 import org.opennaas.core.queue.repository.ExecutionResult;
 import org.opennaas.core.resources.action.IAction;
 
-/**
- * Uses a different thread than the caller to run non blocking transactional operations.
- * 
- * Blocking methods wait for this thread to end before returning.
- * 
- */
-public interface IQueueExecutionEngine {
+public interface IEngineState {
 
 	public ExecutionId submit(List<IAction> actions) throws IllegalStateException;
 
@@ -21,12 +16,6 @@ public interface IQueueExecutionEngine {
 	public ExecutionId commit() throws IllegalStateException;
 
 	public ExecutionId abort() throws IllegalStateException;
-
-	public ExecutionResult blockingBegin() throws IllegalStateException;
-
-	public ExecutionResult blockingCommit() throws IllegalStateException;
-
-	public ExecutionResult blockingAbort() throws IllegalStateException;
 
 	public ExecutionResult waitUntilBeginFinishes() throws IllegalStateException;
 
