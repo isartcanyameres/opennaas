@@ -12,4 +12,10 @@ public interface IQueueExecution {
 
 	public List<IAction> getActions();
 
+	public ExecutionResult getBeginResult();
+
+	public ExecutionResult getCommitResult();
+
+	public ExecutionResult getAbortResult();
+
 }
