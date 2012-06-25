@@ -19,7 +19,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 
-public class QueueCapability extends AbstractCapability implements IQueueCapability {
+public class QueueCapability extends AbstractCapability implements IQueueCapability, IExtendedQueueCapability {
 
 	public static final String			CAPABILITY_TYPE	= "newqueue";
 	private String						resourceId		= "";
@@ -27,6 +27,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	private final ArrayList<IAction>	queue			= new ArrayList<IAction>();
 	private QueueExecutionEngine		qExecEngine		= new QueueExecutionEngine();
 	private final Log					log				= LogFactory.getLog(QueueCapability.class);
+	private QueueState					queueState		= QueueState.EMPTY;
 
 	public QueueCapability(CapabilityDescriptor descriptor) {
 		super(descriptor);
@@ -35,7 +36,16 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	public QueueCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) {
 		super(capabilityDescriptor);
 		this.resourceId = resourceId;
+		this.queueState = QueueState.EMPTY;
 		log.debug("Built new Queue Capability");
+	}
+
+	private void registerExecutionEvents() {
+		String topic = "/org/opennaas/core/queue/exec/FINISHED";
+
+		// String properties = buildPropertiesFilter();
+		// EventFilter filter = new EventFilter(topic, );
+		// TODO FINISH
 	}
 
 	@Override
@@ -58,34 +68,42 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	@Override
 	public IAction removeAction(IAction action) throws IllegalStateException, Exception {
 
+		log.debug("Trying to remove " + action.getActionID() + "action.");
 		if (!getQueueState().equals(QueueState.FILLED))
 			throw new IllegalStateException("Can't remove an action in the current queue state.");
 		int index = 0;
 		while (!queue.get(index).equals(action))
 			index++;
-		if (index == queue.size())
-			throw new Exception("Action coudln't be removed since it doesn't exist in que current queue.");
-		queue.remove(index);
+
+		try {
+			queue.remove(index);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new CapabilityException("Action couldn't be removed since it doesn't exist in que current queue.");
+
+		}
+		queueState = getQueueState();
+
 		return action;
 	}
 
 	@Override
 	public void clear() throws IllegalStateException {
 
-		if (!getQueueState().equals(QueueState.FILLED))
-			throw new IllegalStateException("Can't clear the queue in the current state.");
+		log.debug("Trying to clear the queue.");
 		while (!queue.isEmpty())
 			queue.remove(0);
 		// reset executionID
 		executionID = null;
+		log.debug("Queue cleared.");
 	}
 
 	@Override
 	public ExecutionId begin() throws IllegalStateException {
 		if (!getQueueState().equals(QueueState.FILLED))
 			throw new IllegalStateException("Can't begin queue execution at the current state.");
-		// TODO how to change queue state??
+		// TODO who is responsable of changing the Queu state?
 		executionID = qExecEngine.submit(queue);
+		registerExecutionEvents();
 		qExecEngine.begin();
 
 		return executionID;
@@ -114,7 +132,6 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		executionID = qExecEngine.submit(queue);
 		ExecutionResult execResult = qExecEngine.blockingBegin();
 		return execResult;
-
 	}
 
 	@Override
@@ -148,7 +165,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		try {
 			return Activator.getQueueActionSet(name, version, protocol);
 		} catch (ActivatorException e) {
-			throw new CapabilityException(e);
+			throw new CapabilityException(e.getLocalizedMessage());
 		}
 	}
 
@@ -157,7 +174,6 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 
 		log.info("Start of queueAction call");
 		log.debug("Queue new action");
-		// check params?
 		queue.add(newAction);
 		log.info("End of queueAction call");
 
@@ -184,8 +200,21 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 			execResult = blockingCommit();
 			execResult = blockingAbort();
 		} catch (Exception e) {
-			return execResult;
+			log.error(e.getMessage());
 		}
 		return execResult;
+	}
+
+	@Override
+	public void add(IAction action) throws CapabilityException, IllegalStateException {
+
+		if (getQueueState().equals(QueueState.EXECUTING))
+			throw new IllegalStateException("Can't add an action while executing the queue.");
+
+		// TODO where to check params ?
+
+		queueAction(action);
+
+		queueState = getQueueState();
 	}
 }

@@ -4,6 +4,7 @@ public enum QueueState {
 	EMPTY,
 	FILLED,
 	EXECUTING,
+	ERROR
 	// BEGGINING,
 	// BEGIN_ERROR,
 	// BEGIN_OK,
