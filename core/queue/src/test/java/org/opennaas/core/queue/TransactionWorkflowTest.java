@@ -5,17 +5,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.queue.impl.engine.ExecutionEngine;
-import org.opennaas.core.queue.impl.transaction.ActionsTransaction;
-import org.opennaas.core.queue.impl.transaction.TransactionCoordinator;
-import org.opennaas.core.queue.old.EngineLockedException;
-import org.opennaas.core.queue.old.ICompositeExecutionEngine;
-import org.opennaas.core.queue.old.IExecutionEngine;
-import org.opennaas.core.queue.transaction.ITransaction;
-import org.opennaas.core.queue.transaction.ITransactionCoordinator;
-import org.opennaas.core.queue.transaction.ITransactionWrapper;
-import org.opennaas.core.queue.transaction.ITransactionWrapper.TxResult;
-import org.opennaas.core.queue.transaction.ITransactionWrapper.TxStatus;
+import org.opennaas.core.queue.impl.engine.transaction.ActionsTransaction;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.mock.MockActionError;
 import org.opennaas.core.resources.mock.MockActionExceptionOnExecute;
@@ -291,8 +281,8 @@ public class TransactionWorkflowTest {
 	}
 
 	// TODO test:
-	// returning error in commit causes Tx to abort????
-	// a failure in commit causes Tx to abort????
+	// returning error in commit causes Tx to abort
+	// a failure in commit causes Tx to abort
 
 	// TxCoordinator has access to Tx status when tx finished begin
 	// TxCoordinator has access to Tx status when tx finished

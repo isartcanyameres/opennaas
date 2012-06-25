@@ -9,7 +9,6 @@ import org.opennaas.core.queue.capability.IExtendedQueueCapability;
 import org.opennaas.core.queue.repository.ExecutionId;
 import org.opennaas.core.queue.repository.IQueueExecution;
 import org.opennaas.core.queue.repository.IQueueExecutionRepository;
-import org.opennaas.core.queue.transaction.ITransaction;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.mock.MockAction;
 
@@ -78,8 +77,6 @@ public class QueueTest {
 
 		waitingAction.stopWaiting();
 	}
-
-	// TODO TEST queue lock/unlock works
 
 	// TODO TEST user can access up-to-date Tx status from QExecutionRepository
 	// TODO TEST an execution remains in QExecutionRepository after finishing
