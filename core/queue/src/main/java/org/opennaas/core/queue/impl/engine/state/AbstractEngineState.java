@@ -16,6 +16,7 @@ import org.opennaas.core.queue.impl.engine.callable.WaitCommitAndChangeState;
 import org.opennaas.core.queue.impl.engine.transaction.ActionsTransaction;
 import org.opennaas.core.queue.repository.ExecutionId;
 import org.opennaas.core.queue.repository.ExecutionResult;
+import org.opennaas.core.queue.repository.ExecutionResult.Status;
 import org.opennaas.core.resources.action.IAction;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -29,7 +30,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	private Future<ExecutionResult>	abortDoneFuture;
 
 	public ExecutionId submit(List<IAction> actions) throws IllegalStateException {
-		// TODO check state
 
 		ActionsTransaction tx = new ActionsTransaction();
 		tx.getTransactionOperations().addAll(actions);
@@ -50,8 +50,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	@Override
 	public ExecutionId begin() throws IllegalStateException {
 
-		// TODO check state
-
 		ExecutionResult beginResult = new ExecutionResult();
 		beginResult.setStartTime(new Date());
 		engine.getQExec().setBeginResult(beginResult);
@@ -69,8 +67,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	@Override
 	public ExecutionId commit() throws IllegalStateException {
 
-		// TODO check state
-
 		ExecutionResult commitResult = new ExecutionResult();
 		commitResult.setStartTime(new Date());
 		engine.getQExec().setCommitResult(commitResult);
@@ -86,8 +82,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	@Override
 	public ExecutionId abort() throws IllegalStateException {
 
-		// TODO check state
-
 		ExecutionResult abortResult = new ExecutionResult();
 		abortResult.setStartTime(new Date());
 		engine.getQExec().setAbortResult(abortResult);
@@ -101,7 +95,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	}
 
 	public ExecutionResult waitUntilBeginFinishes() throws IllegalStateException {
-		// TODO check state
 		try {
 			return waitUntilFutureFinishes(beginDoneFuture);
 		} catch (InterruptedException e) {
@@ -111,7 +104,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	}
 
 	public ExecutionResult waitUntilCommitFinishes() throws IllegalStateException {
-		// TODO check state
 		try {
 			return waitUntilFutureFinishes(commitDoneFuture);
 		} catch (InterruptedException e) {
@@ -121,7 +113,6 @@ public abstract class AbstractEngineState implements IEngineState {
 	}
 
 	public ExecutionResult waitUntilAbortFinishes() throws IllegalStateException {
-		// TODO check state
 		try {
 			return waitUntilFutureFinishes(abortDoneFuture);
 		} catch (InterruptedException e) {
@@ -144,8 +135,8 @@ public abstract class AbstractEngineState implements IEngineState {
 		ExecutionResult result = new ExecutionResult();
 		result.setStartTime(baseResult.getStartTime());
 		result.setExecutedActions(baseResult.getExecutedActions());
-		// TODO use real unknownTryLaterResult
-		Object unknownTryLaterResult = new Object();
+		// TODO use a dedicated status for unknownTryLaterResult
+		ExecutionResult.Status unknownTryLaterResult = Status.PENDING;
 		result.setResult(unknownTryLaterResult);
 		return result;
 	}

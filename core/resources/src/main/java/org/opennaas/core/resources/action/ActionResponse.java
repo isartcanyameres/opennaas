@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.opennaas.core.resources.command.Response;
 
-
 public class ActionResponse {
 	public enum STATUS {
-		ERROR, OK, PENDING
+		ERROR, OK, PENDING, SKIPPED
 	};
 
 	private STATUS			status		= STATUS.PENDING;
@@ -105,6 +104,13 @@ public class ActionResponse {
 		response.setInformation(information);
 		response.setResponses(responses);
 		return response;
+	}
+
+	public static ActionResponse skippedResponse(String actionID) {
+		ActionResponse actionResponse = new ActionResponse();
+		actionResponse.setActionID(actionID);
+		actionResponse.setStatus(STATUS.SKIPPED);
+		return actionResponse;
 	}
 
 }

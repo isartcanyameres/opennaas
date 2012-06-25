@@ -15,6 +15,10 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
+		<dependency>
+				<groupId>com.googlecode.guava-osgi</groupId>
+				<artifactId>guava-osgi</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -40,8 +44,9 @@
 								</Import-Package>
 							<Export-Package>
 								org.opennaas.core.queue;version="${project.version}",
+								org.opennaas.core.queue.capability;version="${project.version}",
 								org.opennaas.core.queue.engine;version="${project.version}",
-								org.opennaas.core.queue.transaction;version="${project.version}"
+								org.opennaas.core.queue.repository;version="${project.version}",
 							</Export-Package>
 						</instructions>
 					</configuration>

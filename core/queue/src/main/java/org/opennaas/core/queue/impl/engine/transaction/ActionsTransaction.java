@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.opennaas.core.queue.repository.ExecutionResult;
+import org.opennaas.core.queue.repository.ExecutionResult.Status;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
@@ -76,14 +78,17 @@ public class ActionsTransaction {
 
 	public ExecutionResult begin() {
 		ExecutionResult result = new ExecutionResult();
+		result.setResult(Status.PENDING);
 		result.setStartTime(new Date());
 
 		result = runPrepare(result);
+
+		result = runTransactionOperations(result); // Actions
+
+		result = runValidate(result);
+
 		if (isOk(result)) {
-			result = runTransactionOperations(result); // Actions
-			if (isOk(result)) {
-				result = runValidate(result);
-			}
+			result.setResult(Status.OK);
 		}
 
 		result.setEndTime(new Date());
@@ -93,9 +98,14 @@ public class ActionsTransaction {
 
 	public ExecutionResult commit() {
 		ExecutionResult result = new ExecutionResult();
+		result.setResult(Status.PENDING);
 		result.setStartTime(new Date());
 
 		result = runCommit(result);
+
+		if (isOk(result)) {
+			result.setResult(Status.OK);
+		}
 
 		result.setEndTime(new Date());
 		return result;
@@ -103,21 +113,22 @@ public class ActionsTransaction {
 
 	public ExecutionResult abort() {
 		ExecutionResult result = new ExecutionResult();
+		result.setResult(Status.PENDING);
 		result.setStartTime(new Date());
 
 		result = runAbort(result);
+
+		if (isOk(result)) {
+			result.setResult(Status.OK);
+		}
 
 		result.setEndTime(new Date());
 		return result;
 	}
 
 	private ExecutionResult runTransactionOperations(ExecutionResult result) {
-		boolean failure = false;
-		for (int i = 0; i < getTransactionOperations().size() && !failure; i++) {
+		for (int i = 0; i < getTransactionOperations().size(); i++) {
 			result = runAction(getTransactionOperations().get(i), result);
-			if (!isOk(result)) {
-				failure = true;
-			}
 		}
 		return result;
 	}
@@ -138,15 +149,32 @@ public class ActionsTransaction {
 		return runAction(getAbortAction(), result);
 	}
 
+	/**
+	 * Runs action and updates given wrappingResult with its response.
+	 * 
+	 * Action will be skipped if wrappingResult has an error. In this case, action will be marked as skipped in wrappingResult.
+	 * 
+	 * @param action
+	 * @param wrappingResult
+	 * @return
+	 */
 	private ExecutionResult runAction(IAction action, ExecutionResult wrappingResult) {
-		ActionResponse response = runAction(action);
+		ActionResponse response;
+		if (isOk(wrappingResult)) {
+			response = runAction(action);
+		} else {
+			response = ActionResponse.skippedResponse(action.getActionID());
+		}
 		return updateResultWithActionResponse(wrappingResult, action, response);
 	}
 
 	private ExecutionResult updateResultWithActionResponse(ExecutionResult wrappingResult, IAction action, ActionResponse response) {
 		wrappingResult.getExecutedActions().add(action);
 		wrappingResult.getExecutedActionsResults().add(response);
-		// TODO CHECK response and update result state
+
+		if (response.getStatus().equals(STATUS.ERROR)) {
+			wrappingResult.setResult(Status.ERROR);
+		}
 
 		return wrappingResult;
 	}
@@ -164,13 +192,11 @@ public class ActionsTransaction {
 	}
 
 	private ActionResponse createActionResultFromException(IAction failedAction, Exception fail) {
-		// TODO Auto-generated method stub
-		return null;
+		return ActionResponse.errorResponse(failedAction.getActionID(), fail.getLocalizedMessage());
 	}
 
 	private boolean isOk(ExecutionResult result) {
-		// TODO Auto-generated method stub
-		return false;
+		return !(result.getResult().equals(Status.ERROR));
 	}
 
 }

@@ -6,6 +6,7 @@ import org.opennaas.core.queue.impl.engine.QueueExecutionEngine;
 import org.opennaas.core.queue.impl.engine.state.BeginError;
 import org.opennaas.core.queue.impl.engine.state.BeginOk;
 import org.opennaas.core.queue.repository.ExecutionResult;
+import org.opennaas.core.queue.repository.ExecutionResult.Status;
 
 public class WaitBeginAndChangeState extends WaitFutureAndChangeState {
 
@@ -16,7 +17,7 @@ public class WaitBeginAndChangeState extends WaitFutureAndChangeState {
 	}
 
 	@Override
-	protected void changeState(Object futureResult) {
+	protected void changeState(ExecutionResult futureResult) {
 		if (isOk(futureResult)) {
 			executionEngine.setEngineState(new BeginOk());
 		} else {
@@ -24,9 +25,8 @@ public class WaitBeginAndChangeState extends WaitFutureAndChangeState {
 		}
 	}
 
-	private boolean isOk(Object result) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean isOk(ExecutionResult futureResult) {
+		return !(futureResult.getResult().equals(Status.ERROR));
 	}
 
 }

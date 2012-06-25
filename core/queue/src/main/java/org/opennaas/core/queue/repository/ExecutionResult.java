@@ -14,7 +14,13 @@ public class ExecutionResult {
 	private List<IAction>			executedActions;
 	private List<ActionResponse>	executedActionsResults;
 
-	private Object					result;
+	private Status					result;
+
+	private String					information;
+
+	public enum Status {
+		PENDING, SKIPPED, OK, ERROR;
+	}
 
 	public Date getStartTime() {
 		return startTime;
@@ -48,11 +54,27 @@ public class ExecutionResult {
 		this.executedActionsResults = executedActionsResults;
 	}
 
-	public Object getResult() {
+	public Status getResult() {
 		return result;
 	}
 
-	public void setResult(Object result) {
+	public void setResult(Status result) {
 		this.result = result;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
+	}
+
+	public static ExecutionResult resultFromException(Exception e) {
+		ExecutionResult result = new ExecutionResult();
+		result.setEndTime(new Date());
+		result.setResult(Status.ERROR);
+		result.setInformation(e.getLocalizedMessage());
+		return result;
 	}
 }
