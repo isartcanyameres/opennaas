@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import org.opennaas.core.queue.impl.engine.QueueExecutionEngine;
 import org.opennaas.core.queue.repository.ExecutionResult;
+import org.opennaas.core.queue.repository.ExecutionResult.Status;
 
 public abstract class WaitFutureAndChangeState implements Callable<ExecutionResult> {
 
@@ -32,9 +33,11 @@ public abstract class WaitFutureAndChangeState implements Callable<ExecutionResu
 			// TODO should we cancel future???
 			// if thats a begin yes, otherwise no
 			// future.cancel(true);
-			result.setResult(createResultFromException(e));
+			result.setResult(Status.ERROR);
+			result.setInformation(e.getLocalizedMessage());
 		} catch (Exception e) {
-			result.setResult(createResultFromException(e));
+			result.setResult(Status.ERROR);
+			result.setInformation(e.getLocalizedMessage());
 		} finally {
 			result.setEndTime(new Date());
 			changeState(result);
@@ -43,11 +46,6 @@ public abstract class WaitFutureAndChangeState implements Callable<ExecutionResu
 		return result;
 	}
 
-	private Object createResultFromException(Exception e) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected abstract void changeState(Object futureResult);
+	protected abstract void changeState(ExecutionResult futureResult);
 
 }

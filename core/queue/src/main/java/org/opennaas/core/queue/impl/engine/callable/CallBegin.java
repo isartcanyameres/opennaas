@@ -19,13 +19,8 @@ public class CallBegin implements Callable<ExecutionResult> {
 		try {
 			res = tx.begin();
 		} catch (Exception e) {
-			res = createResultFromException(e);
+			res = ExecutionResult.resultFromException(e);
 		}
 		return res;
-	}
-
-	private ExecutionResult createResultFromException(Exception e) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
