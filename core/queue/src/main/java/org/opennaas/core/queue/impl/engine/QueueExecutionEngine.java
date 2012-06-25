@@ -2,6 +2,7 @@ package org.opennaas.core.queue.impl.engine;
 
 import java.util.List;
 
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.queue.engine.EngineState;
 import org.opennaas.core.queue.engine.IQueueExecutionEngine;
 import org.opennaas.core.queue.impl.engine.state.Free;
@@ -24,6 +25,8 @@ public class QueueExecutionEngine implements IQueueExecutionEngine {
 
 	private QueueExecution				qExec;
 	private ActionsTransaction			tx;
+
+	private IEventManager				eventManager;
 
 	public QueueExecutionEngine() {
 		setEngineState(new Free());
@@ -129,5 +132,13 @@ public class QueueExecutionEngine implements IQueueExecutionEngine {
 
 	public void setExecutor(ListeningExecutorService executor) {
 		this.executor = executor;
+	}
+
+	public IEventManager getEventManager() {
+		return eventManager;
+	}
+
+	public void setEventManager(IEventManager eventManager) {
+		this.eventManager = eventManager;
 	}
 }

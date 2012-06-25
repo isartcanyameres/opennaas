@@ -21,6 +21,7 @@ public class WaitCommitAndChangeState extends WaitFutureAndChangeState {
 		} else {
 			executionEngine.setEngineState(new Error());
 		}
+		sendExecutionFinishedEvent();
 	}
 
 	private boolean isOk(ExecutionResult futureResult) {

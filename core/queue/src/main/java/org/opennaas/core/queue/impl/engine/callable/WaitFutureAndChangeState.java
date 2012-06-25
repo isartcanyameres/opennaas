@@ -1,12 +1,17 @@
 package org.opennaas.core.queue.impl.engine.callable;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.queue.events.QueueExecutionFinishedEvent;
 import org.opennaas.core.queue.impl.engine.QueueExecutionEngine;
 import org.opennaas.core.queue.repository.ExecutionResult;
 import org.opennaas.core.queue.repository.ExecutionResult.Status;
+import org.osgi.service.event.Event;
 
 public abstract class WaitFutureAndChangeState implements Callable<ExecutionResult> {
 
@@ -44,6 +49,19 @@ public abstract class WaitFutureAndChangeState implements Callable<ExecutionResu
 		}
 
 		return result;
+	}
+
+	protected void sendExecutionFinishedEvent() {
+
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("ExecutionId", executionEngine.getQExec().getId().toString());
+
+		Event execFinishedEvent = new QueueExecutionFinishedEvent(properties);
+		getEventManager().publishEvent(execFinishedEvent);
+	}
+
+	protected IEventManager getEventManager() {
+		return executionEngine.getEventManager();
 	}
 
 	protected abstract void changeState(ExecutionResult futureResult);
