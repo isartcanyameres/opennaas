@@ -2,12 +2,16 @@ package org.opennaas.core.queue.capability;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.queue.Activator;
 import org.opennaas.core.queue.QueueState;
 import org.opennaas.core.queue.engine.EngineState;
+import org.opennaas.core.queue.events.QueueExecutionFinishedEvent;
 import org.opennaas.core.queue.impl.engine.QueueExecutionEngine;
 import org.opennaas.core.queue.repository.ExecutionId;
 import org.opennaas.core.queue.repository.ExecutionResult;
@@ -18,20 +22,27 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 
-public class QueueCapability extends AbstractCapability implements IQueueCapability, IExtendedQueueCapability {
+public class QueueCapability extends AbstractCapability implements IQueueCapability, IExtendedQueueCapability, EventHandler {
 
-	public static final String			CAPABILITY_TYPE	= "newqueue";
-	private String						resourceId		= "";
-	private ExecutionId					executionID		= null;
-	private final ArrayList<IAction>	queue			= new ArrayList<IAction>();
-	private QueueExecutionEngine		qExecEngine		= new QueueExecutionEngine();
-	private final Log					log				= LogFactory.getLog(QueueCapability.class);
-	private QueueState					queueState		= QueueState.EMPTY;
+	public static final String			CAPABILITY_TYPE				= "newqueue";
+	private String						resourceId					= "";
+	private ExecutionId					executionID					= null;
+	private final ArrayList<IAction>	queue						= new ArrayList<IAction>();
+	private QueueExecutionEngine		qExecEngine					= new QueueExecutionEngine();
+	private final Log					log							= LogFactory.getLog(QueueCapability.class);
+	private QueueState					queueState					= QueueState.EMPTY;
+	private IEventManager				eventManager;
+	private QueueExecutionRepository	queueExecutionRepository	= new QueueExecutionRepository();
+	private static final String			propertyId					= "ExecutionID";
 
 	public QueueCapability(CapabilityDescriptor descriptor) {
 		super(descriptor);
 	}
+
+	// commit falla -> ir a abort.
 
 	public QueueCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) {
 		super(capabilityDescriptor);
@@ -42,10 +53,14 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 
 	private void registerExecutionEvents() {
 		String topic = "/org/opennaas/core/queue/exec/FINISHED";
+		Properties properties = new Properties();
+		properties.put(propertyId, executionID);
 
-		// String properties = buildPropertiesFilter();
-		// EventFilter filter = new EventFilter(topic, );
-		// TODO FINISH
+		String filterProperties = EventFilter.buildPropertiesFilter(properties);
+		EventFilter filter = new EventFilter(topic, filterProperties);
+
+		int registrationNum = eventManager.registerEventHandler((EventHandler) this, filter);
+
 	}
 
 	@Override
@@ -216,5 +231,21 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		queueAction(action);
 
 		queueState = getQueueState();
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		if (event instanceof QueueExecutionFinishedEvent) {
+			ExecutionId execID = (ExecutionId) event.getProperty(propertyId);
+			if (execID.equals(executionID)) {
+				// go to repo and find results
+				if (queueExecutionRepository.get(executionID).equals()) {// what???
+					clear();
+					queueState = QueueState.EMPTY;
+				} else {
+					queueState = QueueState.FILLED;
+				}
+			}
+		}
 	}
 }
