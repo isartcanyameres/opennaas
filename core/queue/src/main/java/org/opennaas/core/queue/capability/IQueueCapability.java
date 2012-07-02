@@ -12,7 +12,7 @@ public interface IQueueCapability extends ICapability {
 
 	public List<IAction> getActions();
 
-	public IAction removeAction(IAction action) throws IllegalStateException;
+	public IAction removeAction(IAction action) throws IllegalStateException, Exception;
 
 	public void clear() throws IllegalStateException;
 
@@ -28,6 +28,8 @@ public interface IQueueCapability extends ICapability {
 
 	public ExecutionResult blockingAbort() throws IllegalStateException;
 
-	public QueueState getQueueState();
+	public QueueState getQueueState() throws IllegalStateException;
+
+	public ExecutionResult execute();
 
 }
