@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.ICapability;
@@ -19,6 +22,7 @@ import org.opennaas.core.resources.profile.IProfile;
  * @author Isart Canyameres Giménez (i2cat)
  * 
  */
+@XmlRootElement
 public class Resource implements IResource {
 
 	/** The logger **/
@@ -275,6 +279,7 @@ public class Resource implements IResource {
 	/**
 	 * @return the bootstrapper
 	 */
+	@XmlTransient
 	@Override
 	public IResourceBootstrapper getBootstrapper() {
 		return bootstrapper;
@@ -306,6 +311,7 @@ public class Resource implements IResource {
 		return model;
 	}
 
+	@XmlTransient
 	@Override
 	public IProfile getProfile() {
 		return profile;

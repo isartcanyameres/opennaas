@@ -27,19 +27,21 @@ public class ResourceManagerTest {
 	public static void main(String[] args) throws URISyntaxException {
 
 		ResourceDescriptor desc1 = createResourceDescriptor("resource1");
-		ResourceDescriptor desc2 = createResourceDescriptor("resource2");
+		// ResourceDescriptor desc2 = createResourceDescriptor("resource2");
 
 		String resource1Id = createResource(desc1);
-		String resource1Name = getResourceNameFromId(resource1Id);
+		// String resource1Name = getResourceNameFromId(resource1Id);
 
 		IResourceIdentifier identifier1 = new ResourceIdentifier(desc1.getInformation().getType(), resource1Id);
 
-		startResource(identifier1);
-		stopResource(identifier1);
-		removeResource(identifier1);
+		// startResource(identifier1);
+		// stopResource(identifier1);
+		// removeResource(identifier1);
 
-		// IResource resource1 = getResource(identifier1);
+		IResource resource1 = getResource(identifier1);
 		// listResources();
+
+		removeResource(identifier1);
 	}
 
 	private static String createResource(ResourceDescriptor desc) {

@@ -2,6 +2,8 @@ package org.opennaas.core.resources;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -13,6 +15,7 @@ import org.opennaas.core.resources.profile.IProfile;
  * @author Mathieu Lemay (c)2009 Inocybe Technologies inc.
  * 
  */
+@XmlSeeAlso(Resource.class)
 public interface IResource extends ILifecycle {
 
 	public IResourceIdentifier getResourceIdentifier();
