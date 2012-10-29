@@ -10,11 +10,13 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -93,10 +95,18 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 			throw new CapabilityException("VCPE already created");
 
 		try {
-			return buildDesiredScenario(resource, desiredScenario);
+			buildDesiredScenario(resource, desiredScenario);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
+
+		try {
+			storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	/*
@@ -112,6 +122,12 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		try {
 			unbuildScenario(resource, (VCPENetworkModel) resource.getModel());
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		try {
+			storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
@@ -160,6 +176,12 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 					outDatedIface.setIpAddress(iface.getIpAddress());
 				}
 			}
+		}
+
+		try {
+			storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
 		}
 	}
 
@@ -584,6 +606,22 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		} catch (ActivatorException e) {
 			throw new ResourceException("Could not find ProtocolManager", e);
 		}
+	}
+
+	private VCPENetworkDescriptor storeModelIntoDescriptor(VCPENetworkModel model,
+			VCPENetworkDescriptor descriptor) throws ResourceException {
+
+		if (model == null) {
+			descriptor.setvCPEModel(null);
+		} else {
+			try {
+				descriptor.setvCPEModel(model.toXml());
+				// TODO persist descriptor
+			} catch (SerializationException e) {
+				throw new ResourceException(e);
+			}
+		}
+		return descriptor;
 	}
 
 }
