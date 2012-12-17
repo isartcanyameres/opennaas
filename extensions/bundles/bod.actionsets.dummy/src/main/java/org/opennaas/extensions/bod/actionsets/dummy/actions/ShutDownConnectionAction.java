@@ -9,8 +9,8 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
+import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.topology.Link;
 
 public class ShutDownConnectionAction extends Action {
 

@@ -18,7 +18,7 @@ import org.joda.time.DateTime;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
-import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Interface;
 
 public class ParameterTranslator {
 

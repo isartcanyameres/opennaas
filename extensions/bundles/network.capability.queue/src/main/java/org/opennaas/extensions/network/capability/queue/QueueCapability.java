@@ -17,10 +17,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.model.ndl.domain.NetworkDomain;
+import org.opennaas.extensions.model.ndl.topology.Device;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**

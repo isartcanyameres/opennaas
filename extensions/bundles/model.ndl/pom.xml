@@ -7,23 +7,12 @@
 		<version>0.15-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>org.opennaas.extensions.network.model</artifactId>
+	<artifactId>org.opennaas.extensions.model.ndl</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>OpenNaaS :: Network :: Model</name>
-	<description>Network Model Implementation</description>
-	<!--  dependencies  -->
-	<dependencies>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.resources</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.model.ndl</artifactId>
-		</dependency>
-	</dependencies>
+	<name>OpenNaaS :: Model :: NDL</name>
+	<description>NDL Java implementation</description>
 	<build>
 		<plugins>
 			<plugin>
@@ -57,9 +46,9 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!org.opennaas.extensions.network.model.*,*</Import-Package>
-						<Export-Package>org.opennaas.extensions.network.model;version="${project.version}",
-							org.opennaas.extensions.network.model.*;version="${project.version}"
+						<Import-Package>!org.opennaas.extensions.model.ndl.*,*</Import-Package>
+						<Export-Package>org.opennaas.extensions.model.ndl;version="${project.version}",
+							org.opennaas.extensions.model.ndl.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

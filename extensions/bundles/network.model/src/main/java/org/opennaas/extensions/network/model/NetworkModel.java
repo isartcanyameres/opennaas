@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 
 public class NetworkModel implements IModel {
 

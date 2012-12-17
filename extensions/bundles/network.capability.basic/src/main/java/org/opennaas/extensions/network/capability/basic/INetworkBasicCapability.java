@@ -9,9 +9,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkConnection;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Link;
+import org.opennaas.extensions.model.ndl.topology.NetworkConnection;
 
 @Path("/")
 public interface INetworkBasicCapability extends ICapability {

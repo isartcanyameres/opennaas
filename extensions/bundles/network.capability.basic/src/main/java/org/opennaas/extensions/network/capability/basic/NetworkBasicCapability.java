@@ -17,13 +17,13 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Link;
+import org.opennaas.extensions.model.ndl.topology.NetworkConnection;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.capability.basic.mappers.Cim2NdlMapper;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkConnection;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
 import org.opennaas.extensions.router.model.ManagedElement;
 
@@ -178,7 +178,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.network.model.topology.Link)
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.model.ndl.topology.Link)
 	 */
 	@Override
 	public void l2attach(Link link) throws CapabilityException {
@@ -188,9 +188,8 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.network.model.topology.Interface,
-	 * org.opennaas.extensions.network.model.topology.Interface)
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.model.ndl.topology.Interface,
+	 * org.opennaas.extensions.model.ndl.topology.Interface)
 	 */
 	@Override
 	public NetworkConnection l2attach(Interface interface1, Interface interface2) throws CapabilityException {
@@ -264,9 +263,8 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2detach(org.opennaas.extensions.network.model.topology.Interface,
-	 * org.opennaas.extensions.network.model.topology.Interface)
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2detach(org.opennaas.extensions.model.ndl.topology.Interface,
+	 * org.opennaas.extensions.model.ndl.topology.Interface)
 	 */
 	@Override
 	public void l2detach(Interface interface1, Interface interface2) throws CapabilityException {

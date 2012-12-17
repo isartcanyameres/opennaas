@@ -44,6 +44,7 @@
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
 
+		<module>model.ndl</module>
 		<module>network.model</module>
 		<module>network.repository</module>
 		<module>network.capability.basic</module>

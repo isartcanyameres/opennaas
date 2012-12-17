@@ -11,10 +11,10 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.model.ndl.topology.Link;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
@@ -69,7 +69,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(org.opennaas.extensions.network.model.topology.Link)
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(org.opennaas.extensions.model.ndl.topology.Link)
 	 */
 	@Override
 	public void shutDownConnection(BoDLink link) throws CapabilityException {

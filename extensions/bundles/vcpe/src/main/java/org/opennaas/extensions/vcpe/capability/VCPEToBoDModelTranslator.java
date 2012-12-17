@@ -6,10 +6,10 @@ import org.opennaas.extensions.vcpe.model.Interface;
 
 public class VCPEToBoDModelTranslator {
 
-	public static org.opennaas.extensions.network.model.topology.Interface
+	public static org.opennaas.extensions.model.ndl.topology.Interface
 			vCPEInterfaceToBoDInterface(Interface iface, NetworkModel model) {
 
-		org.opennaas.extensions.network.model.topology.Interface netIface =
+		org.opennaas.extensions.model.ndl.topology.Interface netIface =
 				NetworkModelHelper.getInterfaceByName(model.getNetworkElements(), iface.getName());
 		return netIface;
 	}

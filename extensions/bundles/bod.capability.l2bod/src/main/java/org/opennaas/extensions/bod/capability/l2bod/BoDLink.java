@@ -1,6 +1,6 @@
 package org.opennaas.extensions.bod.capability.l2bod;
 
-import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.model.ndl.topology.Link;
 
 public class BoDLink extends Link {
 

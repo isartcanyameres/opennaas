@@ -1,10 +1,10 @@
-package org.opennaas.extensions.network.model.topology;
+package org.opennaas.extensions.model.ndl.topology;
 
-import org.opennaas.extensions.network.model.layer.Layer;
+import org.opennaas.extensions.model.ndl.layer.Layer;
 
 public class TransportNetworkElement extends NetworkElement {
 
-	Layer layer;
+	Layer	layer;
 
 	public Layer getLayer() {
 		return layer;

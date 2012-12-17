@@ -8,10 +8,10 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.model.ndl.topology.Interface;
 import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Interface;
 
 @Command(scope = "net", name = "l2detach", description = "Add a resource to the network")
 public class L2DetachCommand extends GenericKarafCommand {

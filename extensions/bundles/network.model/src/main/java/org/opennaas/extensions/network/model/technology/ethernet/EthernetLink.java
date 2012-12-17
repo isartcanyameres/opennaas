@@ -1,7 +1,7 @@
 package org.opennaas.extensions.network.model.technology.ethernet;
 
+import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Link;
 
 public class EthernetLink extends Link {
 

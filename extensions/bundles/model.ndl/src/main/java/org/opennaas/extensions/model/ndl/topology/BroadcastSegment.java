@@ -1,4 +1,4 @@
-package org.opennaas.extensions.network.model.topology;
+package org.opennaas.extensions.model.ndl.topology;
 
 /**
  * A Broadcast Segment is a direct (not concatenated) connection between multiple Interfaces.

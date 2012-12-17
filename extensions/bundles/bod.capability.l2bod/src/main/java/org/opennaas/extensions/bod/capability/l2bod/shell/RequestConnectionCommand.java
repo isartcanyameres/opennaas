@@ -12,10 +12,10 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 @Command(scope = "l2bod", name = "requestConnection",
 		description = "Request L2 connectivity between specified interfaces.")

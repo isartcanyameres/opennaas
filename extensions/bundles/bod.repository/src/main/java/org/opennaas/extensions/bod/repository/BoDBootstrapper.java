@@ -14,8 +14,8 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.model.ndl.domain.NetworkDomain;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class BoDBootstrapper implements IResourceBootstrapper {

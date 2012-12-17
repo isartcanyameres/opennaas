@@ -1,4 +1,4 @@
-package org.opennaas.extensions.network.model.physical;
+package org.opennaas.extensions.model.ndl.physical;
 
 public class Location {
 	String address;

@@ -249,6 +249,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.model.ndl</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.model</artifactId>
 				<version>${project.version}</version>
 			</dependency>

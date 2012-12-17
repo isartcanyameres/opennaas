@@ -8,13 +8,13 @@ import org.opennaas.core.resources.descriptor.network.InterfaceId;
 import org.opennaas.core.resources.descriptor.network.Layer;
 import org.opennaas.core.resources.descriptor.network.LayerId;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.model.ndl.domain.NetworkDomain;
+import org.opennaas.extensions.model.ndl.topology.ConnectionPoint;
+import org.opennaas.extensions.model.ndl.topology.Device;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.network.model.topology.ConnectionPoint;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 public class NetworkMapperModelToDescriptor {
 
@@ -97,7 +97,7 @@ public class NetworkMapperModelToDescriptor {
 
 	private static List<Layer> getLayers(NetworkModel networkModel) {
 		List<Layer> layers = new ArrayList<Layer>();
-		for (org.opennaas.extensions.network.model.layer.Layer layer : NetworkModelHelper.getLayers(networkModel.getNetworkElements())) {
+		for (org.opennaas.extensions.model.ndl.layer.Layer layer : NetworkModelHelper.getLayers(networkModel.getNetworkElements())) {
 			Layer descriptorLayer = new Layer();
 			descriptorLayer.setName(layer != null ? addHashCharacter(layer.getName()) : null);
 			layers.add(descriptorLayer);

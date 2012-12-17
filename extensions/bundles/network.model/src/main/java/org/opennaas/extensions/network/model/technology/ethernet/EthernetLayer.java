@@ -1,6 +1,6 @@
 package org.opennaas.extensions.network.model.technology.ethernet;
 
-import org.opennaas.extensions.network.model.layer.Layer;
+import org.opennaas.extensions.model.ndl.layer.Layer;
 
 public class EthernetLayer extends Layer {
 

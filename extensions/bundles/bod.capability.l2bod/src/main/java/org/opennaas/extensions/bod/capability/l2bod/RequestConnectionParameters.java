@@ -3,7 +3,7 @@ package org.opennaas.extensions.bod.capability.l2bod;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
-import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Interface;
 
 import com.google.common.base.Objects;
 

@@ -1,6 +1,6 @@
-package org.opennaas.extensions.network.model.layer;
+package org.opennaas.extensions.model.ndl.layer;
 
-import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 
 /**
  * A specific encoding of data in a network connection.

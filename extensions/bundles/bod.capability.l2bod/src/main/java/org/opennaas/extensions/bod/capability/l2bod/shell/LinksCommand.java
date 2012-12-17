@@ -7,8 +7,8 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
+import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.topology.Link;
 
 @Command(scope = "l2bod", name = "links", description = "Show links of BoD resource.")
 public class LinksCommand extends GenericKarafCommand

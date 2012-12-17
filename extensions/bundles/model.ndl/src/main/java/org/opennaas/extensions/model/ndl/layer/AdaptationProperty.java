@@ -1,11 +1,11 @@
-package org.opennaas.extensions.network.model.layer;
+package org.opennaas.extensions.model.ndl.layer;
 
-import org.opennaas.extensions.network.model.topology.ConnectionPoint;
+import org.opennaas.extensions.model.ndl.topology.ConnectionPoint;
 
 public class AdaptationProperty {
 
-	ConnectionPoint clientInterface;
-	ConnectionPoint serverInterface;
+	ConnectionPoint	clientInterface;
+	ConnectionPoint	serverInterface;
 
 	public ConnectionPoint getClientInterface() {
 		return clientInterface;

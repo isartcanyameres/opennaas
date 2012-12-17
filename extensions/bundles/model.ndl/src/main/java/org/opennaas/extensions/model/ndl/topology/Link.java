@@ -1,4 +1,4 @@
-package org.opennaas.extensions.network.model.topology;
+package org.opennaas.extensions.model.ndl.topology;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

@@ -1,16 +1,16 @@
-package org.opennaas.extensions.network.model.topology;
+package org.opennaas.extensions.model.ndl.topology;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.network.model.domain.AdministrativeDomain;
-import org.opennaas.extensions.network.model.physical.Location;
+import org.opennaas.extensions.model.ndl.domain.AdministrativeDomain;
+import org.opennaas.extensions.model.ndl.physical.Location;
 
 /**
  * A network element is an abstract class which describe an elements in a computer network.
- *
+ * 
  * @author isart
- *
+ * 
  */
 public abstract class NetworkElement {
 	String						name;

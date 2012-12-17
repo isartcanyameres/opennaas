@@ -3,13 +3,13 @@ package org.opennaas.extensions.network.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.model.ndl.domain.NetworkDomain;
+import org.opennaas.extensions.model.ndl.topology.ConnectionPoint;
+import org.opennaas.extensions.model.ndl.topology.Device;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Link;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.network.model.topology.ConnectionPoint;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 public class MockNetworkModel {
 

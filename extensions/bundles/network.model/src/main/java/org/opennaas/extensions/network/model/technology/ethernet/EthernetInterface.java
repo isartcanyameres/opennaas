@@ -1,6 +1,6 @@
 package org.opennaas.extensions.network.model.technology.ethernet;
 
-import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.Interface;
 
 public class EthernetInterface extends Interface {
 
