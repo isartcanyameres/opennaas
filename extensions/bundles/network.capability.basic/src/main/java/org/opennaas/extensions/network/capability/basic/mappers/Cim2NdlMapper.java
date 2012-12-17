@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.extensions.model.ndl.layer.Layer;
 import org.opennaas.extensions.model.ndl.topology.Device;
 import org.opennaas.extensions.model.ndl.topology.Interface;
@@ -14,6 +15,8 @@ import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.devices.LogicalRouter;
+import org.opennaas.extensions.network.model.devices.Router;
 import org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface;
 import org.opennaas.extensions.network.model.technology.ethernet.EthernetLayer;
 import org.opennaas.extensions.network.model.technology.ethernet.TaggedEthernetLayer;
@@ -40,9 +43,9 @@ public class Cim2NdlMapper {
 	 *            name for the model to add
 	 * @return NetworkElements created to represent given model in networkModel.
 	 */
-	public static List<NetworkElement> addModelToNetworkModel(IModel model, NetworkModel networkModel, String name) {
-		if (model instanceof System) {
-			return addManagedElementToNetworkModel((System) model, networkModel, name);
+	public static List<NetworkElement> addResourceToNetworkModel(IResource resource, NetworkModel networkModel, String name) {
+		if (resource.getModel() != null && resource.getModel() instanceof System) {
+			return addManagedElementToNetworkModel(resource, networkModel, name);
 		}
 		return new ArrayList<NetworkElement>();
 	}
@@ -56,11 +59,14 @@ public class Cim2NdlMapper {
 	 *            name for the System to add
 	 * @return NetworkElements created to represent given managedElement in networkModel.
 	 */
-	private static List<NetworkElement> addManagedElementToNetworkModel(System managedElement, NetworkModel networkModel, String name) {
+	private static List<NetworkElement> addManagedElementToNetworkModel(IResource resource, NetworkModel networkModel, String name) {
+
+		System managedElement = (System) resource.getModel();
+
 		List<NetworkElement> createdElements = new ArrayList<NetworkElement>();
 
 		// create device
-		Device dev = addDeviceToNetworkModel(managedElement, networkModel, name);
+		Device dev = addDeviceToNetworkModel(resource, networkModel, name);
 
 		// create interfaces
 		List<Interface> interfaces = addInterfacesToNetworkModel(managedElement, dev, networkModel);
@@ -85,8 +91,20 @@ public class Cim2NdlMapper {
 	 *            Name of the device
 	 * @return Created Device.
 	 */
-	private static Device addDeviceToNetworkModel(System managedElement, NetworkModel networkModel, String name) {
-		Device dev = new Device();
+	private static Device addDeviceToNetworkModel(IResource resource, NetworkModel networkModel, String name) {
+		System managedElement = (System) resource.getModel();
+
+		Device dev;
+		if (isRouter(resource)) {
+			if (isVirtual(resource)) {
+				dev = new LogicalRouter();
+			} else {
+				dev = new Router();
+			}
+		} else {
+			dev = new Device();
+		}
+
 		if (name != null) {
 			dev.setName(name);
 		} else {
@@ -388,4 +406,15 @@ public class Cim2NdlMapper {
 		}
 		return new TaggedEthernetLayer();
 	}
+
+	private static boolean isRouter(IResource resource) {
+		return resource.getResourceDescriptor().getInformation().getType().equals("router");
+	}
+
+	private static boolean isVirtual(IResource resource) {
+		return resource.getResourceDescriptor().getProperties() != null &&
+				resource.getResourceDescriptor().getProperties().get(ResourceDescriptor.VIRTUAL) != null &&
+				resource.getResourceDescriptor().getProperties().get(ResourceDescriptor.VIRTUAL).equals("true");
+	}
+
 }

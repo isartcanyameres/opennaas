@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.ILifecycle;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -21,11 +20,10 @@ import org.opennaas.extensions.model.ndl.topology.Interface;
 import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.model.ndl.topology.NetworkConnection;
 import org.opennaas.extensions.model.ndl.topology.NetworkElement;
-import org.opennaas.extensions.network.capability.basic.mappers.Cim2NdlMapper;
+import org.opennaas.extensions.network.capability.basic.mappers.ResourceToNetworkModelMapper;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
-import org.opennaas.extensions.router.model.ManagedElement;
 
 public class NetworkBasicCapability extends AbstractCapability implements INetworkBasicCapability {
 
@@ -100,7 +98,6 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 
 		NetworkModel networkModel = (NetworkModel) resource.getModel();
 
-		IModel resourceModel = resourceToAdd.getModel();
 		String toAddName = resourceToAdd.getResourceDescriptor().getInformation().getType() + ":" + resourceToAdd.getResourceDescriptor()
 				.getInformation().getName();
 
@@ -110,22 +107,17 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 			throw new CapabilityException("There is already a resource with same name in this network.");
 		}
 
-		// FIXME should use a generic getIModel2NdlWrapper method placed in IModel (NetworkModel should be moved to OpenNaaS for that)
-		// IModel2NdlWrapper wrapper = resourceModel.getIModel2NdlWrapper();
-		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
 		log.debug("Adding resource " + toAddName + " to network " + getResourceName());
-		if (resourceModel instanceof ManagedElement) {
-			// update model
-			List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(resourceToAdd.getModel(), networkModel, toAddName);
 
-			if (!createdElements.isEmpty()) {
-				networkModel.addResourceRef(toAddName, resourceToAdd.getResourceIdentifier().getId());
+		// update model
+		List<NetworkElement> createdElements = ResourceToNetworkModelMapper.addResourceToNetworkModel(resourceToAdd, networkModel, toAddName);
+		if (!createdElements.isEmpty()) {
+			networkModel.addResourceRef(toAddName, resourceToAdd.getResourceIdentifier().getId());
 
-				// update topology in descriptor
-				NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
-				resource.getResourceDescriptor().setNetworkTopology(topology);
-				resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
-			}
+			// update topology in descriptor
+			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
+			resource.getResourceDescriptor().setNetworkTopology(topology);
+			resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 		}
 
 		log.info("End of addResource call");

@@ -5,6 +5,9 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.extensions.model.ndl.topology.ConnectionPoint;
 import org.opennaas.extensions.model.ndl.topology.Device;
 import org.opennaas.extensions.model.ndl.topology.Interface;
@@ -36,7 +39,18 @@ public class Cim2NdlMapperTest {
 	public void addManagedElementToModelTest() {
 		NetworkModel networkModel = new NetworkModel();
 		System model = createTestRouterModel();
-		List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(model, networkModel, model.getName());
+
+		ResourceDescriptor descriptor = new ResourceDescriptor();
+		Information info = new Information();
+		info.setName(model.getName());
+		info.setType("router");
+		descriptor.setInformation(info);
+
+		Resource resource = new Resource();
+		resource.setModel(model);
+		resource.setResourceDescriptor(descriptor);
+
+		List<NetworkElement> createdElements = Cim2NdlMapper.addResourceToNetworkModel(resource, networkModel, model.getName());
 
 		Assert.assertFalse(networkModel.getNetworkElements().isEmpty());
 		Assert.assertTrue(networkModel.getNetworkElements().containsAll(createdElements));
