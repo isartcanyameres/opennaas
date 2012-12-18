@@ -9,8 +9,10 @@ import org.opennaas.core.resources.descriptor.network.Device;
 import org.opennaas.core.resources.descriptor.network.DeviceId;
 import org.opennaas.core.resources.descriptor.network.Interface;
 import org.opennaas.core.resources.descriptor.network.InterfaceId;
+import org.opennaas.core.resources.descriptor.network.LogicalRouter;
 import org.opennaas.core.resources.descriptor.network.NetworkDomain;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.core.resources.descriptor.network.Router;
 import org.opennaas.extensions.model.ndl.topology.Link;
 import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
@@ -105,7 +107,14 @@ public class NetworkMapperDescriptorToModel {
 		if (networkTopology.getDevices() != null) {
 			/* set devices */
 			for (Device device : networkTopology.getDevices()) {
-				org.opennaas.extensions.model.ndl.topology.Device modelDevice = new org.opennaas.extensions.model.ndl.topology.Device();
+				org.opennaas.extensions.model.ndl.topology.Device modelDevice;
+				if (device instanceof LogicalRouter) {
+					modelDevice = new org.opennaas.extensions.network.model.devices.LogicalRouter();
+				} else if (device instanceof Router) {
+					modelDevice = new org.opennaas.extensions.network.model.devices.Router();
+				} else {
+					modelDevice = new org.opennaas.extensions.model.ndl.topology.Device();
+				}
 				modelDevice.setName(device.getName());
 
 				List<org.opennaas.extensions.model.ndl.topology.ConnectionPoint> interfaces = new ArrayList<org.opennaas.extensions.model.ndl.topology.ConnectionPoint>();

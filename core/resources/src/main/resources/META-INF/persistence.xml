@@ -16,6 +16,8 @@
 		<class>org.opennaas.core.resources.descriptor.network.Layer</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.LogicalRouter</class>
+		<class>org.opennaas.core.resources.descriptor.network.Router</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
 		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>
@@ -41,6 +43,8 @@
 		<class>org.opennaas.core.resources.descriptor.network.Layer</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.LogicalRouter</class>
+		<class>org.opennaas.core.resources.descriptor.network.Router</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
 		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>

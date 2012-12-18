@@ -15,6 +15,8 @@ import org.opennaas.extensions.model.ndl.topology.Interface;
 import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.devices.LogicalRouter;
+import org.opennaas.extensions.network.model.devices.Router;
 
 public class NetworkMapperModelToDescriptor {
 
@@ -176,7 +178,14 @@ public class NetworkMapperModelToDescriptor {
 	}
 
 	private static org.opennaas.core.resources.descriptor.network.Device newDevice(Device networkElement) {
-		org.opennaas.core.resources.descriptor.network.Device device = new org.opennaas.core.resources.descriptor.network.Device();
+		org.opennaas.core.resources.descriptor.network.Device device;
+		if (networkElement instanceof LogicalRouter) {
+			device = new org.opennaas.core.resources.descriptor.network.LogicalRouter();
+		} else if (networkElement instanceof Router) {
+			device = new org.opennaas.core.resources.descriptor.network.Router();
+		} else {
+			device = new org.opennaas.core.resources.descriptor.network.Device();
+		}
 		device.setName(networkElement.getName());
 		return device;
 	}

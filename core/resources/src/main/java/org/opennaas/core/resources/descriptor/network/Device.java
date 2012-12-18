@@ -8,13 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 @Entity
+@XmlSeeAlso(Router.class)
 public class Device {
 
 	@Id
 	@GeneratedValue
-	private long		id;
+	protected long		id;
 
 	@Basic
 	String				name;
