@@ -1,6 +1,7 @@
 package org.opennaas.extensions.network.repository.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -9,11 +10,11 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.model.ndl.topology.Interface;
+import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.mock.MockNetworkModel;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.model.ndl.topology.Interface;
-import org.opennaas.extensions.model.ndl.topology.NetworkElement;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
 
@@ -108,7 +109,7 @@ public class NetworkDescriptorToMapperModelTest {
 			Assert.assertFalse(tmp_elems.isEmpty());
 
 			if (elem1.getName() != null) { // should be elements without name?? Links has no name, by now.
-				int elemIndexInModel2 = NetworkModelHelper.getNetworkElementByName(elem1.getName(), tmp_elems);
+				int elemIndexInModel2 = NetworkModelHelper.getNetworkElementIndexByName(elem1.getName(), tmp_elems);
 				Assert.assertFalse("Elem " + elem1.getName() + " of model1 is not in model2.", elemIndexInModel2 == -1);
 			}
 		}

@@ -145,12 +145,25 @@ public class NetworkModelHelper {
 	}
 
 	/**
+	 * @param name
+	 * @param networkElements
+	 * @return First element in networkElements with given name, or null if there is no such element.
+	 */
+	public static NetworkElement getNetworkElementByName(String name, List<? extends NetworkElement> networkElements) {
+		int index = getNetworkElementIndexByName(name, networkElements);
+		if (index != -1)
+			return networkElements.get(index);
+
+		return null;
+	}
+
+	/**
 	 * 
 	 * @param name
 	 * @param networkElements
 	 * @return lowest current position of networkElements containing an element named with given name.
 	 */
-	public static int getNetworkElementByName(String name, List<? extends NetworkElement> networkElements) {
+	public static int getNetworkElementIndexByName(String name, List<? extends NetworkElement> networkElements) {
 		int pos = 0;
 		for (NetworkElement networkElement : networkElements) {
 			if (networkElement.getName() != null

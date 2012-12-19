@@ -102,7 +102,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 				.getInformation().getName();
 
 		// check resourceToAdd is not in networkModel
-		int pos = NetworkModelHelper.getNetworkElementByName(toAddName, networkModel.getNetworkElements());
+		int pos = NetworkModelHelper.getNetworkElementIndexByName(toAddName, networkModel.getNetworkElements());
 		if (pos != -1) {
 			throw new CapabilityException("There is already a resource with same name in this network.");
 		}
@@ -148,7 +148,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 
 		// get networkElement to remove
 		List<NetworkElement> resources = NetworkModelHelper.getNetworkElementsExceptTransportElements(networkModel);
-		int pos = NetworkModelHelper.getNetworkElementByName(toRemoveName, resources);
+		int pos = NetworkModelHelper.getNetworkElementIndexByName(toRemoveName, resources);
 		if (pos == -1) {
 			throw new CapabilityException("Resource " + toRemoveName + " not found in network model.");
 		}

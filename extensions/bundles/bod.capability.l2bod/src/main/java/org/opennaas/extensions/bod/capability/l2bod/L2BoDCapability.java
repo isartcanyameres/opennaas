@@ -76,7 +76,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		log.info("Start of shutDownConnection call");
 
 		List<Link> links = NetworkModelHelper.getLinks((NetworkModel) resource.getModel());
-		int pos = NetworkModelHelper.getNetworkElementByName(link.getName(), links);
+		int pos = NetworkModelHelper.getNetworkElementIndexByName(link.getName(), links);
 		if (pos == -1) {
 			throw new CapabilityException("Given link does not exist");
 		}

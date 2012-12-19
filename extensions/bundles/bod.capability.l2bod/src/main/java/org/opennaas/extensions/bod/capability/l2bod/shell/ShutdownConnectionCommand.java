@@ -49,7 +49,7 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 	 * 
 	 */
 	private BoDLink getLink(NetworkModel model) {
-		int linkIndex = NetworkModelHelper.getNetworkElementByName(connectionName, model.getNetworkElements());
+		int linkIndex = NetworkModelHelper.getNetworkElementIndexByName(connectionName, model.getNetworkElements());
 		if (linkIndex == -1) {
 			throw new NoSuchElementException("No such link " + connectionName);
 		}

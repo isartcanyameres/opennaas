@@ -10,8 +10,6 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.model.ndl.domain.NetworkDomain;
@@ -78,14 +76,12 @@ public class BoDBootstrapper implements IResourceBootstrapper {
 	public void resetModel(Resource resource) throws ResourceException {
 
 		NetworkDomain networkDomain = new NetworkDomain();
-		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
-		Information information = resourceDescriptor.getInformation();
-
-		networkDomain.setName(information.getName());
+		networkDomain.setName(resource.getResourceDescriptor().getInformation().getName());
 
 		NetworkModel networkModel = new NetworkModel();
 		networkModel.getNetworkElements().add(networkDomain);
 
+		// FIXME why did we prepare a networkModel if we return a new one?
 		resource.setModel(new NetworkModel());
 	}
 
