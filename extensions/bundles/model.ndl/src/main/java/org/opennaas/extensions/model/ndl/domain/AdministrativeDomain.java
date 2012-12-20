@@ -1,5 +1,6 @@
 package org.opennaas.extensions.model.ndl.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.model.ndl.topology.NetworkElement;
@@ -21,7 +22,7 @@ import org.opennaas.extensions.model.ndl.topology.NetworkElement;
  */
 public class AdministrativeDomain {
 
-	List<NetworkElement>	domainElements;
+	private List<NetworkElement>	domainElements	= new ArrayList<NetworkElement>();
 
 	public List<NetworkElement> getDomainElements() {
 		return domainElements;

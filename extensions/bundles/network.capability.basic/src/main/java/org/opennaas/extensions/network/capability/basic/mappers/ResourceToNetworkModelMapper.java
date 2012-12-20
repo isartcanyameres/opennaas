@@ -25,9 +25,10 @@ public class ResourceToNetworkModelMapper {
 	public static List<NetworkElement> addResourceToNetworkModel(IResource resource, NetworkModel networkModel, String name)
 			throws CapabilityException {
 
-		// TODO add support for BoD resources at least
 		if (isRouter(resource)) {
 			return Cim2NdlMapper.addResourceToNetworkModel(resource, networkModel, name);
+		} else if (isBoD(resource)) {
+			return BoDToNetworkModelMapper.addResourceToNetworkModel(resource, networkModel, name);
 		} else {
 			throw new CapabilityException("Cannot add resource " + name + ". Unsupported resource type");
 		}
@@ -36,5 +37,9 @@ public class ResourceToNetworkModelMapper {
 
 	private static boolean isRouter(IResource resource) {
 		return resource.getResourceDescriptor().getInformation().getType().equals("router");
+	}
+
+	private static boolean isBoD(IResource resource) {
+		return resource.getResourceDescriptor().getInformation().getType().equals("bod");
 	}
 }

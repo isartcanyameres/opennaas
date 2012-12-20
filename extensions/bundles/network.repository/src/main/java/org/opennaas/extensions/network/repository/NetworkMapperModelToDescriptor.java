@@ -45,11 +45,14 @@ public class NetworkMapperModelToDescriptor {
 		for (NetworkDomain networkDomain : NetworkModelHelper.getDomains(networkModel.getNetworkElements())) {
 			int posNetworkDomain = getNetworkDomain(networkDomain.getName(), existingDomains);
 			org.opennaas.core.resources.descriptor.network.NetworkDomain networkDomainDescriptor = existingDomains.get(posNetworkDomain);
+
 			List<DeviceId> deviceIds = new ArrayList<DeviceId>();
 			for (Device device : networkDomain.getHasDevice()) {
 				deviceIds.add(newDeviceId(device.getName()));
 			}
 			networkDomainDescriptor.setHasDevices(deviceIds);
+
+			// TODO add interfaces
 		}
 
 		/* using device */

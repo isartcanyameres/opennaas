@@ -22,6 +22,8 @@ public class NetworkDomain {
 	@ElementCollection
 	List<DeviceId>	hasDevices;
 
+	// TODO add interfaces
+
 	@XmlElement(name = "name", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getName() {
 		return name;
