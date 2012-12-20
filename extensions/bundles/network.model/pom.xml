@@ -57,10 +57,18 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!org.opennaas.extensions.network.model.*,*</Import-Package>
+						<Import-Package>!org.opennaas.extensions.network.model.*,
+							org.opennaas.extensions.model.ndl.*;version="${project.version}",
+							*
+						</Import-Package>
 						<Export-Package>org.opennaas.extensions.network.model;version="${project.version}",
-							org.opennaas.extensions.network.model.*;version="${project.version}"
+							org.opennaas.extensions.network.model.*;version="${project.version}",
+							org.opennaas.extensions.model.ndl.*;version="${project.version}"
 						</Export-Package>
+						<!-- 
+						Exporting imported packages (ndl) is discouraged. 
+						However, we don't want bundles depending on network model to depend on ndl as well 
+						-->
 					</instructions>
 				</configuration>
 			</plugin>
