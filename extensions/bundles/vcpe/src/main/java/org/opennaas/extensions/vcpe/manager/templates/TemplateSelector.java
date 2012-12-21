@@ -4,6 +4,7 @@
 package org.opennaas.extensions.vcpe.manager.templates;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.manager.templates.basic.Template;
 
 /**
  * @author Jordi

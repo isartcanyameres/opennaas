@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.manager.templates;
+package org.opennaas.extensions.vcpe.manager.templates.basic;
 
 import static com.google.common.collect.Iterables.filter;
 
@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
+import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -33,6 +34,8 @@ public class Template implements ITemplate {
 	private static final String	TEMPLATE		= "/templates/template.properties";
 	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
+	public static final String	BASIC_TEMPLATE	= "basic.template";
+
 	private Properties			props;
 	private Properties			bgpProps;
 
@@ -51,6 +54,11 @@ public class Template implements ITemplate {
 		} catch (IOException e) {
 			throw new VCPENetworkManagerException("can't load the template properties");
 		}
+	}
+
+	@Override
+	public String getType() {
+		return BASIC_TEMPLATE;
 	}
 
 	/**
