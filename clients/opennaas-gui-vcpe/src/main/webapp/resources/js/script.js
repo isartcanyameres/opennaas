@@ -29,13 +29,21 @@ $(document).ready(function() {
 		resizable : false,
 		draggable : false
 	});
-
+	
 	$(".link_confirm").click(function(e) {
 		e.preventDefault();
-		var theHREF = $(this).attr("href");
+		var action = $(this).attr("href");
+		var $form = $('<form></form>');
+		$form.attr('id', "tmp_form");
+	    $form.attr('action',action);
+	    $form.attr('method',"get");
+	    $form.appendTo('body');
+	    
 		$("#dialog").dialog('option', 'buttons', {
 			"Confirm" : function() {
-				window.location.href = theHREF;
+				$("#pleaseWait").dialog("open");
+				alert($("form#tmp_form").attr('action'));
+				$("form#tmp_form").submit();
 			},
 			"Cancel" : function() {
 				$(this).dialog("close");
@@ -61,6 +69,17 @@ $(document).ready(function() {
 		$("#dialog").dialog("open");
 	});
 });
+
+/**
+ * helper function to create a form with given method
+ * @param method
+ * @returns {___submitForm0}
+ */
+function getNewSubmitForm(method){
+	 var $submitForm = $('<form></form>');
+	 submitForm.method = method;
+	 return $submitForm;
+}
 
 /**
  * Ajax call to check if the interface is free in the environment
