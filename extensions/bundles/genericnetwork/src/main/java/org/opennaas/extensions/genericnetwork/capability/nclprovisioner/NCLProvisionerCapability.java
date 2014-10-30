@@ -21,6 +21,7 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  */
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,6 +31,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.common.util.ProxyClassLoader;
+import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -44,6 +47,7 @@ import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICi
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.IExternalModuleClient;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
@@ -80,6 +84,11 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	private final Object		lock			= new Object();
 
+	private final static String	DELEGATE_KEY			= "ncl.delegate";
+	private final static String	DELEGATE_URL_KEY		= "ncl.delegate.url";
+	private boolean 			shouldDelegate 			= false;
+	private String				delegateURL;
+
 	public NCLProvisionerCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
@@ -96,6 +105,10 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
+
+			// read shouldDelegate option from descriptor
+			shouldDelegate = readShouldDelegate();
+
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
 		}
@@ -117,49 +130,56 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		try {
 
 			synchronized (lock) {
+				
+				if (shouldDelegate) {
+					
+					return delegateAllocateToExternalImplementation(circuitRequest);
+					
+				} else {
 
-				IPathFindingCapability pathFindingCapab;
-				ICircuitProvisioningCapability circuitProvCapability;
-				ICircuitAggregationCapability circuitAggregationCapability;
-
-				pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
-				circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-				circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
-
-				Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-				Circuit toAllocate = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
-
-				log.info("Allocating circuit " + toAllocate.getCircuitId() + " with route " + toAllocate.getRoute().getId());
-				if (log.isDebugEnabled()) {
-					StringBuilder sb = new StringBuilder();
-					for (NetworkConnection c : toAllocate.getRoute().getNetworkConnections()) {
-						sb.append(c.getName());
-						sb.append(", ");
+					IPathFindingCapability pathFindingCapab;
+					ICircuitProvisioningCapability circuitProvCapability;
+					ICircuitAggregationCapability circuitAggregationCapability;
+	
+					pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
+					circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+					circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
+	
+					Route route = pathFindingCapab.findPathForRequest(circuitRequest);
+					Circuit toAllocate = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
+	
+					log.info("Allocating circuit " + toAllocate.getCircuitId() + " with route " + toAllocate.getRoute().getId());
+					if (log.isDebugEnabled()) {
+						StringBuilder sb = new StringBuilder();
+						for (NetworkConnection c : toAllocate.getRoute().getNetworkConnections()) {
+							sb.append(c.getName());
+							sb.append(", ");
+						}
+						log.debug("Route details: " + sb.toString());
 					}
-					log.debug("Route details: " + sb.toString());
+	
+					// call aggregation logic with all requested circuits and the one toAllocate
+					Set<Circuit> toAggregate = new HashSet<Circuit>();
+					toAggregate.addAll(getRequestedCircuits());
+					toAggregate.add(toAllocate);
+					Set<Circuit> allAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
+	
+					// replace currently allocated (already aggregated) with new aggregated circuits
+					List<Circuit> oldAggregated = new ArrayList<Circuit>();
+					oldAggregated.addAll(circuitProvCapability.getCircuits());
+					List<Circuit> newAggregated = new ArrayList<Circuit>(allAggregatedCircuits.size());
+					newAggregated.addAll(allAggregatedCircuits);
+	
+					circuitProvCapability.replace(oldAggregated, newAggregated);
+	
+					// update requested circuits in the model
+					// add allocated one (toAllocate)
+					((GenericNetworkModel) resource.getModel()).getRequestedCircuits().put(toAllocate.getCircuitId(), toAllocate);
+	
+					log.info("Allocated circuit " + toAllocate.getCircuitId() + " with route " + toAllocate.getRoute().getId());
+	
+					return toAllocate.getCircuitId();
 				}
-
-				// call aggregation logic with all requested circuits and the one toAllocate
-				Set<Circuit> toAggregate = new HashSet<Circuit>();
-				toAggregate.addAll(getRequestedCircuits());
-				toAggregate.add(toAllocate);
-				Set<Circuit> allAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
-
-				// replace currently allocated (already aggregated) with new aggregated circuits
-				List<Circuit> oldAggregated = new ArrayList<Circuit>();
-				oldAggregated.addAll(circuitProvCapability.getCircuits());
-				List<Circuit> newAggregated = new ArrayList<Circuit>(allAggregatedCircuits.size());
-				newAggregated.addAll(allAggregatedCircuits);
-
-				circuitProvCapability.replace(oldAggregated, newAggregated);
-
-				// update requested circuits in the model
-				// add allocated one (toAllocate)
-				((GenericNetworkModel) resource.getModel()).getRequestedCircuits().put(toAllocate.getCircuitId(), toAllocate);
-
-				log.info("Allocated circuit " + toAllocate.getCircuitId() + " with route " + toAllocate.getRoute().getId());
-
-				return toAllocate.getCircuitId();
 
 			}
 
@@ -175,37 +195,45 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void deallocateCircuit(String circuitId) throws CapabilityException {
 
 		synchronized (lock) {
-
-			ICircuitProvisioningCapability circuitProvCapability;
-			ICircuitAggregationCapability circuitAggregationCapability;
-			try {
-				circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-				circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
-			} catch (ResourceException e) {
-				throw new CapabilityException(e);
+			
+			if (shouldDelegate) { 
+				
+				delegateDeallocateToExternalImplementation(circuitId);
+				
+			} else {
+				
+				ICircuitProvisioningCapability circuitProvCapability;
+				ICircuitAggregationCapability circuitAggregationCapability;
+				try {
+					circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+					circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
+				} catch (ResourceException e) {
+					throw new CapabilityException(e);
+				}
+	
+				// call aggregation logic with all requested circuits except the one to be removed
+				Set<Circuit> toAggregate = new HashSet<Circuit>();
+				for (Circuit circuit : getRequestedCircuits()) {
+					if (!circuit.getCircuitId().equals(circuitId))
+						toAggregate.add(circuit);
+				}
+				Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
+	
+				// replace currently aggregated by newAggregatedCircuits
+				List<Circuit> oldAggregated = new ArrayList<Circuit>();
+				oldAggregated.addAll(circuitProvCapability.getCircuits());
+				List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
+				newAggregated.addAll(newAggregatedCircuits);
+	
+				circuitProvCapability.replace(oldAggregated, newAggregated);
+	
+				// update requested circuits in the model
+				// remove deallocated one
+				((GenericNetworkModel) resource.getModel()).getRequestedCircuits().remove(circuitId);
+	
+				log.info("Deallocated circuit " + circuitId);
+			
 			}
-
-			// call aggregation logic with all requested circuits except the one to be removed
-			Set<Circuit> toAggregate = new HashSet<Circuit>();
-			for (Circuit circuit : getRequestedCircuits()) {
-				if (!circuit.getCircuitId().equals(circuitId))
-					toAggregate.add(circuit);
-			}
-			Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
-
-			// replace currently aggregated by newAggregatedCircuits
-			List<Circuit> oldAggregated = new ArrayList<Circuit>();
-			oldAggregated.addAll(circuitProvCapability.getCircuits());
-			List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
-			newAggregated.addAll(newAggregatedCircuits);
-
-			circuitProvCapability.replace(oldAggregated, newAggregated);
-
-			// update requested circuits in the model
-			// remove deallocated one
-			((GenericNetworkModel) resource.getModel()).getRequestedCircuits().remove(circuitId);
-
-			log.info("Deallocated circuit " + circuitId);
 
 		}
 	}
@@ -492,5 +520,92 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		}
 
 		return circuitsIdsInPort;
+	}
+	
+	/**
+	 * Determines whether this capability should delegate to an external module or not. 
+	 * 
+	 * It reads required information from the CapabilityDescriptor
+	 * 
+	 * @return true when ncl.delegate property is set to "true" and ncl.delegate.url is a valid URI, false otherwise.
+	 */
+	private boolean readShouldDelegate() {
+		
+		boolean shouldDelegate = false;
+		
+		String delegateProp = descriptor.getPropertyValue(DELEGATE_KEY);
+		if (delegateProp != null) {
+			if (Boolean.parseBoolean(delegateProp)) {
+				delegateURL = descriptor.getPropertyValue(DELEGATE_URL_KEY);
+				if (delegateURL == null) {
+					log.warn("Not delegating! Missing " + DELEGATE_URL_KEY + " value");
+				} else {
+					try {
+						URI.create(delegateURL);
+						shouldDelegate = true;
+					} catch (IllegalArgumentException e) {
+						log.warn("Not delegating! Invalid URL", e);
+					}
+				}
+			}	
+		}
+		return shouldDelegate;
+	}
+
+	private String delegateAllocateToExternalImplementation(CircuitRequest circuitRequest) {
+		
+		// FIXME hard-coded client interface!!!
+		IExternalModuleClient client = createRestClient(delegateURL, IExternalModuleClient.class, null, null, null);
+		String routeStr = client.allocate(circuitRequest);
+		
+		// TODO parse routeStr into a Route Object
+		// would it be possible for client to return the Route in the format we want???
+		Route route = null;
+	
+		Circuit toAllocate = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
+		return toAllocate.getCircuitId();
+	}
+	
+	private void delegateDeallocateToExternalImplementation(String circuitId) {
+		// TODO NOT IMPLEMENTED
+	}
+	
+	/**
+	 * Creates a JAXRSClient with given clientInterface.
+	 * 
+	 * @param uri
+	 *            the URI where the service is running
+	 * @param clientInterface
+	 *            interface class the client should has.
+	 * @param providers
+	 *            custom JAX-RS providers
+	 * @param username
+	 *            Basic authentication username
+	 * @param password
+	 *            Basic authentication password
+	 * @return JAX-RX Client configured with given parameters.
+	 */
+	public static <T> T createRestClient(String uri, Class<T> clientInterface, List<? extends Object> providers, String username, String password) {
+
+		ProxyClassLoader classLoader = new ProxyClassLoader();
+		classLoader.addLoader(clientInterface.getClassLoader());
+		classLoader.addLoader(JAXRSClientFactoryBean.class.getClassLoader());
+
+		JAXRSClientFactoryBean clientFactory = new JAXRSClientFactoryBean();
+		clientFactory.setAddress(uri);
+		if (providers != null && !providers.isEmpty())
+			clientFactory.setProviders(providers);
+		clientFactory.setResourceClass(clientInterface);
+		clientFactory.setClassLoader(classLoader);
+		if (username != null && password != null) {
+			clientFactory.setUsername(username);
+			clientFactory.setPassword(password);
+		}
+		
+		// Safe type cast: JAXRSClientFactoryBean.create() returns Object implementing 
+		// the interface given in JAXRSClientFactoryBean.setResourceClass()
+		@SuppressWarnings("unchecked")
+		T client = (T) clientFactory.create();
+		return client;
 	}
 }
